@@ -20,7 +20,7 @@ export default function Header() {
           </button>
 
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="LuvRang" className="h-10 md:h-12 w-auto" />
+            <img src={logo} alt="LuvRang" className="h-14 md:h-16 w-auto" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 font-body text-sm tracking-wide">
