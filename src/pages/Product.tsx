@@ -1,74 +1,57 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useCart } from '@/contexts/CartContext';
 import { Minus, Plus, ChevronDown } from 'lucide-react';
-import type { ShopifyProduct, ShopifyVariant } from '@/api/shopify';
-
-// Mock product for demo
-const mockProduct: ShopifyProduct = {
-  id: '1',
-  handle: 'royal-blue-mandala',
-  title: 'Royal Blue Mandala Rangoli',
-  description: 'A stunning handmade rangoli featuring intricate blue mandala patterns with gold accents. Perfect for Diwali, housewarming, and festive celebrations.',
-  descriptionHtml: '<p>A stunning handmade rangoli featuring intricate blue mandala patterns with gold accents. Perfect for Diwali, housewarming, and festive celebrations.</p>',
-  tags: ['festive', 'mandala', 'blue'],
-  productType: 'Rangoli',
-  images: { edges: [] },
-  variants: {
-    edges: [
-      {
-        node: {
-          id: 'v1-small',
-          title: 'Small (12 inch)',
-          availableForSale: true,
-          price: { amount: '1299', currencyCode: 'INR' },
-          compareAtPrice: null,
-          selectedOptions: [{ name: 'Size', value: 'Small (12 inch)' }],
-          image: null,
-        },
-      },
-      {
-        node: {
-          id: 'v1-medium',
-          title: 'Medium (18 inch)',
-          availableForSale: true,
-          price: { amount: '1899', currencyCode: 'INR' },
-          compareAtPrice: null,
-          selectedOptions: [{ name: 'Size', value: 'Medium (18 inch)' }],
-          image: null,
-        },
-      },
-      {
-        node: {
-          id: 'v1-large',
-          title: 'Large (24 inch)',
-          availableForSale: true,
-          price: { amount: '2599', currencyCode: 'INR' },
-          compareAtPrice: null,
-          selectedOptions: [{ name: 'Size', value: 'Large (24 inch)' }],
-          image: null,
-        },
-      },
-    ],
-  },
-  priceRange: { minVariantPrice: { amount: '1299', currencyCode: 'INR' }, maxVariantPrice: { amount: '2599', currencyCode: 'INR' } },
-  compareAtPriceRange: { minVariantPrice: { amount: '0', currencyCode: 'INR' }, maxVariantPrice: { amount: '0', currencyCode: 'INR' } },
-};
+import { getProductByHandle, formatPrice } from '@/api/shopify';
+import type { ShopifyVariant } from '@/api/shopify';
 
 export default function Product() {
   const { handle } = useParams<{ handle: string }>();
   const { addItem } = useCart();
-  const product = mockProduct; // Replace with API call when Shopify is connected
 
-  const variants = product.variants.edges.map((e) => e.node);
-  const [selectedVariant, setSelectedVariant] = useState<ShopifyVariant>(variants[0]);
+  const { data: product, isLoading } = useQuery({
+    queryKey: ['product', handle],
+    queryFn: () => getProductByHandle(handle!),
+    enabled: !!handle,
+  });
+
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [careOpen, setCareOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
 
+  if (isLoading) {
+    return (
+      <div className="container-luxury py-8 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+          <div className="aspect-square rounded-lg bg-secondary animate-pulse" />
+          <div className="space-y-4">
+            <div className="h-8 bg-secondary rounded animate-pulse w-3/4" />
+            <div className="h-6 bg-secondary rounded animate-pulse w-1/4" />
+            <div className="h-20 bg-secondary rounded animate-pulse" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="container-luxury py-16 text-center">
+        <p className="font-body text-muted-foreground">Product not found.</p>
+      </div>
+    );
+  }
+
+  const variants = product.variants.edges.map((e) => e.node);
+  const selectedVariant: ShopifyVariant = variants[selectedVariantIndex] || variants[0];
+
   const handleAddToCart = () => {
     addItem(product, selectedVariant, quantity);
   };
+
+  const mainImage = selectedVariant.image || product.images.edges[0]?.node;
 
   return (
     <div className="container-luxury py-8 md:py-16">
@@ -76,16 +59,10 @@ export default function Product() {
         {/* Image Gallery */}
         <div className="space-y-4">
           <div className="aspect-square rounded-lg bg-secondary overflow-hidden">
-            {product.images.edges[0] ? (
-              <img
-                src={product.images.edges[0].node.url}
-                alt={product.images.edges[0].node.altText || product.title}
-                className="w-full h-full object-cover"
-              />
+            {mainImage ? (
+              <img src={mainImage.url} alt={mainImage.altText || product.title} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground font-body text-sm">
-                Product Image
-              </div>
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground font-body text-sm">Product Image</div>
             )}
           </div>
           {product.images.edges.length > 1 && (
@@ -104,13 +81,9 @@ export default function Product() {
           <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground">{product.title}</h1>
 
           <div className="mt-4 flex items-baseline gap-3 font-body">
-            <span className="text-2xl font-semibold text-foreground">
-              ₹{parseFloat(selectedVariant.price.amount).toLocaleString('en-IN')}
-            </span>
+            <span className="text-2xl font-semibold text-foreground">{formatPrice(selectedVariant.price)}</span>
             {selectedVariant.compareAtPrice && parseFloat(selectedVariant.compareAtPrice.amount) > 0 && (
-              <span className="text-muted-foreground line-through">
-                ₹{parseFloat(selectedVariant.compareAtPrice.amount).toLocaleString('en-IN')}
-              </span>
+              <span className="text-muted-foreground line-through">{formatPrice(selectedVariant.compareAtPrice)}</span>
             )}
           </div>
 
@@ -125,15 +98,15 @@ export default function Product() {
           {variants.length > 1 && (
             <div className="mt-8">
               <label className="font-body text-xs tracking-widest uppercase text-muted-foreground mb-3 block">
-                Size
+                {variants[0].selectedOptions?.[0]?.name || 'Option'}
               </label>
               <div className="flex flex-wrap gap-2">
-                {variants.map((v) => (
+                {variants.map((v, i) => (
                   <button
                     key={v.id}
-                    onClick={() => setSelectedVariant(v)}
+                    onClick={() => setSelectedVariantIndex(i)}
                     className={`font-body text-sm px-4 py-2.5 rounded-md border transition-colors ${
-                      selectedVariant.id === v.id
+                      selectedVariantIndex === i
                         ? 'border-primary bg-primary text-primary-foreground'
                         : 'border-border text-foreground hover:border-foreground/30'
                     }`}
@@ -147,32 +120,17 @@ export default function Product() {
 
           {/* Quantity */}
           <div className="mt-8">
-            <label className="font-body text-xs tracking-widest uppercase text-muted-foreground mb-3 block">
-              Quantity
-            </label>
+            <label className="font-body text-xs tracking-widest uppercase text-muted-foreground mb-3 block">Quantity</label>
             <div className="inline-flex items-center border border-border rounded-md">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-3 py-2.5 text-foreground/60 hover:text-foreground transition-colors"
-              >
-                <Minus size={16} />
-              </button>
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2.5 text-foreground/60 hover:text-foreground transition-colors"><Minus size={16} /></button>
               <span className="w-12 text-center font-body text-sm">{quantity}</span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="px-3 py-2.5 text-foreground/60 hover:text-foreground transition-colors"
-              >
-                <Plus size={16} />
-              </button>
+              <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2.5 text-foreground/60 hover:text-foreground transition-colors"><Plus size={16} /></button>
             </div>
           </div>
 
           {/* Add to Cart */}
-          <button
-            onClick={handleAddToCart}
-            className="mt-8 w-full bg-primary text-primary-foreground font-body text-sm font-medium py-4 rounded-md hover:bg-primary/90 transition-colors"
-          >
-            Add to Cart — ₹{(parseFloat(selectedVariant.price.amount) * quantity).toLocaleString('en-IN')}
+          <button onClick={handleAddToCart} className="mt-8 w-full bg-primary text-primary-foreground font-body text-sm font-medium py-4 rounded-md hover:bg-primary/90 transition-colors">
+            Add to Cart — {formatPrice({ amount: String(parseFloat(selectedVariant.price.amount) * quantity), currencyCode: selectedVariant.price.currencyCode })}
           </button>
 
           {/* Payment Notes */}
@@ -189,10 +147,7 @@ export default function Product() {
 
           {/* Accordions */}
           <div className="mt-10 border-t border-border divide-y divide-border">
-            <button
-              onClick={() => setCareOpen(!careOpen)}
-              className="w-full flex items-center justify-between py-4 font-body text-sm text-foreground"
-            >
+            <button onClick={() => setCareOpen(!careOpen)} className="w-full flex items-center justify-between py-4 font-body text-sm text-foreground">
               Care Instructions
               <ChevronDown size={16} className={`transition-transform ${careOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -206,11 +161,7 @@ export default function Product() {
                 </ul>
               </div>
             )}
-
-            <button
-              onClick={() => setDeliveryOpen(!deliveryOpen)}
-              className="w-full flex items-center justify-between py-4 font-body text-sm text-foreground"
-            >
+            <button onClick={() => setDeliveryOpen(!deliveryOpen)} className="w-full flex items-center justify-between py-4 font-body text-sm text-foreground">
               Delivery Information
               <ChevronDown size={16} className={`transition-transform ${deliveryOpen ? 'rotate-180' : ''}`} />
             </button>
