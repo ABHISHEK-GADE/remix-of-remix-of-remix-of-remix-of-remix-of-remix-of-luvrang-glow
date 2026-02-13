@@ -5,6 +5,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { Minus, Plus, ChevronDown, ChevronRight, Share2, Truck, RotateCcw, Shield } from 'lucide-react';
 import { getProductByHandle, formatPrice } from '@/api/shopify';
 import { toast } from 'sonner';
+import SEO from '@/components/SEO';
 
 export default function Product() {
   const { handle } = useParams<{ handle: string }>();
@@ -92,7 +93,9 @@ export default function Product() {
     : 0;
 
   return (
-    <div className="container-luxury py-8 md:py-16">
+    <>
+      <SEO title={product.title} description={product.description || `Shop ${product.title} — premium handmade rangoli by LuvRang.`} />
+      <div className="container-luxury py-8 md:py-16">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 font-body text-xs text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
@@ -290,5 +293,6 @@ export default function Product() {
         </div>
       </div>
     </div>
+    </>
   );
 }

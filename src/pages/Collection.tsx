@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { getCollectionByHandle, getProducts } from '@/api/shopify';
+import SEO from '@/components/SEO';
 
 export default function Collection() {
   const { handle } = useParams<{ handle: string }>();
@@ -25,7 +26,9 @@ export default function Collection() {
   const description = collection?.description ?? '';
 
   return (
-    <div className="container-luxury py-8 md:py-16">
+    <>
+      <SEO title={title} description={description || `Shop the ${title} collection at LuvRang. Premium handmade reusable rangoli.`} />
+      <div className="container-luxury py-8 md:py-16">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 font-body text-xs text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
@@ -33,7 +36,7 @@ export default function Collection() {
         <span className="text-foreground capitalize">{title}</span>
       </nav>
 
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 animate-fade-up">
         <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground capitalize">{title}</h1>
         {description && <p className="font-body text-muted-foreground mt-3 max-w-lg mx-auto">{description}</p>}
         {!isLoading && (
@@ -68,5 +71,6 @@ export default function Collection() {
         </div>
       )}
     </div>
+    </>
   );
 }
