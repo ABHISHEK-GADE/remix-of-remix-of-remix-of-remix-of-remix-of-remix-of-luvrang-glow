@@ -4,8 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MarketingBar from "@/components/MarketingBar";
 import CartDrawer from "@/components/CartDrawer";
 import Index from "./pages/Index";
 import Collection from "./pages/Collection";
@@ -21,6 +23,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <AnnouncementBar />
           <Header />
           <main className="min-h-screen">
             <Routes>
@@ -31,6 +34,7 @@ const App = () => (
             </Routes>
           </main>
           <Footer />
+          <MarketingBar />
           <CartDrawer />
         </BrowserRouter>
       </CartProvider>
