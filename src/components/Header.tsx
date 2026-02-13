@@ -35,23 +35,23 @@ export default function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-300 ${scrolled ? 'shadow-soft' : ''}`}>
-        <div className="container-luxury flex items-center justify-between h-16 md:h-20">
-          {/* Mobile menu toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 -ml-2 text-foreground"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+        <div className="container-luxury grid grid-cols-3 items-center h-16 md:h-20">
+          {/* Left: Logo + mobile menu */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 -ml-2 text-foreground"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+            <Link to="/" className="flex items-center">
+              <img src={logo} alt="LuvRang" className="h-14 md:h-16 w-auto" />
+            </Link>
+          </div>
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img src={logo} alt="LuvRang" className="h-14 md:h-16 w-auto" />
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 font-body text-sm tracking-wide">
+          {/* Center: Desktop Nav */}
+          <nav className="hidden md:flex items-center justify-center gap-8 font-body text-sm tracking-wide">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -67,8 +67,8 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Action Icons */}
-          <div className="flex items-center gap-0.5 md:gap-1">
+          {/* Right: Action Icons */}
+          <div className="flex items-center justify-end gap-0.5 md:gap-1">
             <button
               onClick={() => setSearchOpen(true)}
               className="p-2 text-foreground/70 hover:text-foreground transition-colors"
