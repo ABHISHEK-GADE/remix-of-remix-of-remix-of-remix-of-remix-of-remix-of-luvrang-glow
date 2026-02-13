@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logo from '@/assets/logo.svg';
 
 export default function Footer() {
   return (
@@ -7,7 +8,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="font-display text-2xl font-bold mb-4">LuvRang</h3>
+            <Link to="/">
+              <img src={logo} alt="LuvRang" className="h-12 w-auto brightness-0 invert mb-4" />
+            </Link>
             <p className="text-background/60 text-sm leading-relaxed font-body">
               Premium handmade reusable rangoli — crafted for every celebration.
             </p>
@@ -35,7 +38,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Connect */}
           <div>
             <h4 className="font-body text-xs tracking-widest uppercase mb-4 text-background/40">Connect</h4>
             <ul className="space-y-2 font-body text-sm">
@@ -48,7 +51,11 @@ export default function Footer() {
 
         <div className="border-t border-background/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 font-body text-xs text-background/40">
           <p>© {new Date().getFullYear()} LuvRang. All rights reserved.</p>
-          <p>PAN India Shipping • Cash on Delivery Available</p>
+          <div className="flex items-center gap-4">
+            <Link to="/privacy-policy" className="hover:text-background/60 transition-colors">Privacy</Link>
+            <Link to="/terms-of-service" className="hover:text-background/60 transition-colors">Terms</Link>
+            <span>PAN India Shipping • COD Available</span>
+          </div>
         </div>
       </div>
     </footer>
