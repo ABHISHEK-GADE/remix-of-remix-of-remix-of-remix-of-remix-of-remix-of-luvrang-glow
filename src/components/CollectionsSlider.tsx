@@ -1,20 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getCollections } from '@/api/shopify';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
 import festiveImg from '@/assets/collection-festive.jpg';
 import weddingImg from '@/assets/collection-wedding.jpg';
 import everydayImg from '@/assets/collection-everyday.jpg';
 
 const fallbackCollections = [
-  { title: 'Festive', handle: 'festive', image: festiveImg, description: 'Diwali, Navratri & more' },
-  { title: 'Wedding', handle: 'wedding', image: weddingImg, description: 'Bridal & ceremony decor' },
-  { title: 'Everyday Decor', handle: 'everyday', image: everydayImg, description: 'Elegant daily touches' },
+  { title: 'Festive', handle: 'festive', image: festiveImg, description: 'Diwali, Navratri & more', count: 24 },
+  { title: 'Wedding', handle: 'wedding', image: weddingImg, description: 'Bridal & ceremony decor', count: 18 },
+  { title: 'Everyday Decor', handle: 'everyday', image: everydayImg, description: 'Elegant daily touches', count: 12 },
 ];
 
 export default function CollectionsSlider() {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const { data: shopifyCollections } = useQuery({
     queryKey: ['collections'],
     queryFn: () => getCollections(10),
@@ -26,39 +24,26 @@ export default function CollectionsSlider() {
         handle: c.handle,
         image: c.image?.url || festiveImg,
         description: c.description || '',
+        count: c.products?.edges?.length || 0,
       }))
     : fallbackCollections;
 
-  const scroll = (dir: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    const amount = scrollRef.current.clientWidth * 0.7;
-    scrollRef.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
-  };
-
   return (
-    <section className="py-10 md:py-14 bg-background">
+    <section className="py-10 md:py-14 bg-secondary/40">
       <div className="container-luxury">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Shop Collections</h2>
-            <p className="font-body text-muted-foreground mt-1 text-sm">Find the perfect rangoli for your occasion</p>
-          </div>
-          <div className="hidden sm:flex gap-2">
-            <button onClick={() => scroll('left')} className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors" aria-label="Scroll left">
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => scroll('right')} className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors" aria-label="Scroll right">
-              <ChevronRight size={18} />
-            </button>
-          </div>
+        <div className="text-center mb-8">
+          <p className="font-body text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Curated For You</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Shop by Collection</h2>
         </div>
 
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 -mx-4 px-4">
-          {collections.map((col) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {collections.slice(0, 3).map((col, i) => (
             <Link
               key={col.handle}
               to={`/collections/${col.handle}`}
-              className="group relative overflow-hidden rounded-lg aspect-[3/4] min-w-[260px] sm:min-w-[300px] md:min-w-[320px] flex-shrink-0 snap-start hover-lift"
+              className={`group relative overflow-hidden rounded-xl ${
+                i === 0 ? 'sm:row-span-2 aspect-[3/4] sm:aspect-auto sm:h-full' : 'aspect-[4/3]'
+              }`}
             >
               <img
                 src={typeof col.image === 'string' ? col.image : col.image}
@@ -66,10 +51,18 @@ export default function CollectionsSlider() {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="font-display text-xl font-semibold text-background">{col.title}</h3>
-                <p className="font-body text-background/70 text-sm mt-1">{col.description}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+              
+              <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                <span className="inline-block text-[10px] uppercase tracking-widest font-body font-semibold text-accent mb-2">
+                  {col.count}+ designs
+                </span>
+                <h3 className="font-display text-lg md:text-xl font-semibold text-background leading-tight">{col.title}</h3>
+                <p className="font-body text-background/60 text-xs mt-1 line-clamp-1">{col.description}</p>
+                
+                <span className="inline-flex items-center gap-1.5 mt-3 text-xs font-body font-medium text-accent group-hover:gap-2.5 transition-all duration-300">
+                  Explore <ArrowRight size={13} />
+                </span>
               </div>
             </Link>
           ))}
