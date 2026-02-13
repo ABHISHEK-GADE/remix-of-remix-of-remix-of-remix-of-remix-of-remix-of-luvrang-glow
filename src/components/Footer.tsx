@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link to="/">
-              <img alt="LuvRang" className="h-12 w-auto brightness-0 invert mb-4" src="/lovable-uploads/c215f2b6-eda0-4abe-bddd-d297d28651ad.png" />
+              <img alt="LuvRang" className="h-12 w-auto mb-4" src="/lovable-uploads/c215f2b6-eda0-4abe-bddd-d297d28651ad.png" />
             </Link>
             <p className="text-background/60 text-sm leading-relaxed font-body">
               Premium handmade reusable rangoli — crafted for every celebration.
