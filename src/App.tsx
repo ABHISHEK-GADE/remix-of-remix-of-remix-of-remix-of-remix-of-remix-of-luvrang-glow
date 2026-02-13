@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import MarketingBar from "@/components/MarketingBar";
 import CartDrawer from "@/components/CartDrawer";
 import ScrollToTop from "@/components/ScrollToTop";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import Product from "./pages/Product";
@@ -56,6 +57,8 @@ function AppContent() {
       </main>
       <Footer />
       <MarketingBar />
+      <CartDrawer />
+      <WhatsAppButton />
       <CartDrawer />
     </>
   );
