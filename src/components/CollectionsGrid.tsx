@@ -13,17 +13,21 @@ export default function CollectionsGrid() {
   return (
     <section className="section-spacing bg-background">
       <div className="container-luxury">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Shop Collections</h2>
-          <p className="font-body text-muted-foreground mt-2 text-sm">Find the perfect rangoli for your occasion</p>
+        <div className="text-center mb-14">
+          <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">Browse</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            Shop <span className="text-gradient-gold">Collections</span>
+          </h2>
+          <p className="font-body text-muted-foreground mt-3 text-sm">Find the perfect rangoli for your occasion</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {collections.map((col) => (
+          {collections.map((col, i) => (
             <Link
               key={col.handle}
               to={`/collections/${col.handle}`}
-              className="group relative overflow-hidden rounded-lg aspect-[3/4] hover-lift"
+              className="group relative overflow-hidden rounded-xl aspect-[3/4] hover-lift animate-fade-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
             >
               <img
                 src={col.image}

@@ -11,17 +11,24 @@ export default function WhyLuvRang() {
   return (
     <section className="section-spacing bg-background">
       <div className="container-luxury">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Why LuvRang</h2>
+        <div className="text-center mb-14">
+          <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">The LuvRang Difference</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            Why Choose <span className="text-gradient-gold">LuvRang</span>
+          </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {features.map((f) => (
-            <div key={f.title} className="text-center">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/5 flex items-center justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div
+              key={f.title}
+              className="text-center p-6 rounded-xl bg-secondary/50 border border-border/50 hover-lift animate-fade-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              <div className="w-14 h-14 mx-auto mb-4 rounded-lg bg-primary/10 flex items-center justify-center">
                 <f.icon size={24} className="text-primary" />
               </div>
-              <h3 className="font-display text-base font-semibold text-foreground mb-1">{f.title}</h3>
+              <h3 className="font-display text-base font-semibold text-foreground mb-2">{f.title}</h3>
               <p className="font-body text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
             </div>
           ))}

@@ -1,22 +1,24 @@
+import { Play } from 'lucide-react';
+
 export default function VideoGuide() {
   return (
     <section className="section-spacing bg-background">
       <div className="container-luxury">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Watch How It's Done</h2>
-          <p className="font-body text-muted-foreground mt-2 text-sm">See our handmade rangoli in action</p>
+        <div className="text-center mb-14">
+          <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">See It In Action</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            Watch How It's <span className="text-gradient-gold">Done</span>
+          </h2>
+          <p className="font-body text-muted-foreground mt-3 text-sm max-w-lg mx-auto">See our handmade rangoli transform any space in seconds</p>
         </div>
 
-        <div className="max-w-3xl mx-auto rounded-xl overflow-hidden bg-secondary aspect-video flex items-center justify-center">
-          {/* Replace with actual YouTube/video embed */}
+        <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden bg-secondary/50 border border-border/50 aspect-video flex items-center justify-center animate-fade-up group cursor-pointer hover-lift">
           <div className="text-center p-8">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-primary ml-1">
-                <path d="M8 5.14v14l11-7-11-7z" fill="currentColor" />
-              </svg>
+            <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <Play size={32} className="text-primary ml-1" fill="currentColor" />
             </div>
-            <p className="font-body text-muted-foreground text-sm">Video coming soon</p>
-            <p className="font-body text-muted-foreground/60 text-xs mt-1">Add your YouTube video URL to embed here</p>
+            <p className="font-display text-lg font-semibold text-foreground mb-1">Video Coming Soon</p>
+            <p className="font-body text-muted-foreground text-sm">Add your YouTube video URL to embed here</p>
           </div>
         </div>
       </div>
