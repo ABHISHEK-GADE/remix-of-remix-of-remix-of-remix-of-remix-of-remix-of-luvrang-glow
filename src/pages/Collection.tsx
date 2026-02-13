@@ -29,48 +29,61 @@ export default function Collection() {
     <>
       <SEO title={title} description={description || `Shop the ${title} collection at LuvRang. Premium handmade reusable rangoli.`} />
       <div className="container-luxury py-8 md:py-16">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 font-body text-xs text-muted-foreground mb-6">
-        <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-        <ChevronRight size={12} />
-        <span className="text-foreground capitalize">{title}</span>
-      </nav>
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 font-body text-xs text-muted-foreground mb-8 animate-fade-up">
+          <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight size={12} />
+          <span className="text-foreground capitalize">{title}</span>
+        </nav>
 
-      <div className="text-center mb-12 animate-fade-up">
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground capitalize">{title}</h1>
-        {description && <p className="font-body text-muted-foreground mt-3 max-w-lg mx-auto">{description}</p>}
-        {!isLoading && (
-          <p className="font-body text-xs text-muted-foreground mt-2">
-            {products.length} {products.length === 1 ? 'product' : 'products'}
-          </p>
+        <div className="text-center mb-14 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+          <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">Collection</p>
+          <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground capitalize">
+            {title.split(' ').length > 1 ? (
+              <>
+                {title.split(' ').slice(0, -1).join(' ')}{' '}
+                <span className="text-gradient-gold">{title.split(' ').slice(-1)}</span>
+              </>
+            ) : (
+              <span className="text-gradient-gold">{title}</span>
+            )}
+          </h1>
+          {description && <p className="font-body text-muted-foreground mt-3 max-w-lg mx-auto">{description}</p>}
+          {!isLoading && (
+            <p className="font-body text-xs text-muted-foreground mt-2">
+              {products.length} {products.length === 1 ? 'product' : 'products'}
+            </p>
+          )}
+        </div>
+
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="space-y-3">
+                <div className="aspect-square rounded-xl bg-secondary animate-pulse" />
+                <div className="h-4 bg-secondary rounded animate-pulse w-3/4" />
+                <div className="h-3 bg-secondary rounded animate-pulse w-1/2" />
+              </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product, i) => (
+              <div key={product.node.id} className="animate-fade-up" style={{ animationDelay: `${(i % 4) * 0.08}s` }}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 rounded-2xl bg-secondary/50 border border-border/50 animate-fade-up">
+            <p className="font-display text-lg font-semibold text-foreground mb-2">No products found</p>
+            <p className="font-body text-muted-foreground mb-6">This collection is being curated for you.</p>
+            <Link to="/" className="inline-block bg-primary text-primary-foreground font-body text-sm font-medium px-8 py-3.5 rounded-md hover:bg-primary/90 transition-colors">
+              Back to Home
+            </Link>
+          </div>
         )}
       </div>
-
-      {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="space-y-3">
-              <div className="aspect-square rounded-lg bg-secondary animate-pulse" />
-              <div className="h-4 bg-secondary rounded animate-pulse w-3/4" />
-              <div className="h-3 bg-secondary rounded animate-pulse w-1/2" />
-            </div>
-          ))}
-        </div>
-      ) : products.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.node.id} product={product} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-16">
-          <p className="font-body text-muted-foreground mb-4">No products found in this collection yet.</p>
-          <Link to="/" className="inline-block bg-primary text-primary-foreground font-body text-sm font-medium px-8 py-3.5 rounded-md hover:bg-primary/90 transition-colors">
-            Back to Home
-          </Link>
-        </div>
-      )}
-    </div>
     </>
   );
 }

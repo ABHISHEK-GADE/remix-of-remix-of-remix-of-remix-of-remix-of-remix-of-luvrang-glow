@@ -17,21 +17,28 @@ export default function ProductsGrid({ title, subtitle, count = 8 }: ProductsGri
   return (
     <section className="section-spacing bg-background">
       <div className="container-luxury">
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
+          <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">Explore</p>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">{title}</h2>
-          <p className="font-body text-muted-foreground mt-2 text-sm">{subtitle}</p>
+          <p className="font-body text-muted-foreground mt-3 text-sm">{subtitle}</p>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {Array.from({ length: Math.min(count, 8) }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-lg bg-secondary animate-pulse" />
+              <div key={i} className="space-y-3">
+                <div className="aspect-square rounded-xl bg-secondary animate-pulse" />
+                <div className="h-4 bg-secondary rounded animate-pulse w-3/4" />
+                <div className="h-3 bg-secondary rounded animate-pulse w-1/2" />
+              </div>
             ))}
           </div>
         ) : products && products.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {products.slice(0, count).map((product) => (
-              <ProductCard key={product.node.id} product={product} />
+            {products.slice(0, count).map((product, i) => (
+              <div key={product.node.id} className="animate-fade-up" style={{ animationDelay: `${(i % 4) * 0.08}s` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         ) : (

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '@/api/shopify';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '@/api/shopify';
+import { Package } from 'lucide-react';
 
 export default function BundleHighlights() {
   const { data: products, isLoading } = useQuery({
@@ -9,26 +10,28 @@ export default function BundleHighlights() {
     queryFn: () => getProducts(6, 'tag:bundle'),
   });
 
-  // If no bundle-tagged products, show section with message
   const bundles = products ?? [];
 
   return (
     <section className="section-spacing bg-secondary/30">
       <div className="container-luxury">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Bundle & Save</h2>
-          <p className="font-body text-muted-foreground mt-2 text-sm">Get more for less with our curated bundles</p>
+        <div className="text-center mb-14">
+          <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">Special Deals</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            Bundle & <span className="text-gradient-gold">Save</span>
+          </h2>
+          <p className="font-body text-muted-foreground mt-3 text-sm">Get more for less with our curated bundles</p>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-48 rounded-lg bg-secondary animate-pulse" />
+              <div key={i} className="h-48 rounded-xl bg-secondary animate-pulse" />
             ))}
           </div>
         ) : bundles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {bundles.map((b) => {
+            {bundles.map((b, i) => {
               const p = b.node;
               const price = p.priceRange.minVariantPrice;
               const compareAt = p.compareAtPriceRange?.minVariantPrice;
@@ -41,7 +44,8 @@ export default function BundleHighlights() {
                 <Link
                   key={p.id}
                   to={`/product/${p.handle}`}
-                  className="bg-background rounded-lg p-6 shadow-soft hover-lift text-center"
+                  className="bg-background rounded-xl p-6 border border-border/50 hover-lift text-center animate-fade-up"
+                  style={{ animationDelay: `${i * 0.1}s` }}
                 >
                   {hasDiscount && savings > 0 && (
                     <span className="inline-block bg-accent text-accent-foreground text-[10px] font-body font-bold tracking-widest uppercase px-3 py-1 rounded-sm mb-4">
@@ -61,7 +65,13 @@ export default function BundleHighlights() {
             })}
           </div>
         ) : (
-          <p className="text-center font-body text-muted-foreground py-8">No bundles available yet.</p>
+          <div className="text-center py-12 rounded-2xl bg-background border border-border/50 animate-fade-up">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+              <Package size={28} className="text-primary" />
+            </div>
+            <p className="font-display text-lg font-semibold text-foreground mb-1">Bundles Coming Soon</p>
+            <p className="font-body text-sm text-muted-foreground">We are curating exciting bundle deals for you</p>
+          </div>
         )}
       </div>
     </section>
