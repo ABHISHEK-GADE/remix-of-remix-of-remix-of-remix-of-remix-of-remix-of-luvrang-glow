@@ -17,8 +17,8 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
   });
 
   if (response.status === 402) {
-    toast.error('Shopify: Payment required', {
-      description: 'Your store needs an active Shopify billing plan. Visit https://admin.shopify.com to upgrade.',
+    toast.error('Store temporarily unavailable', {
+      description: 'Please try again later or contact us at support@luvrang.in.',
     });
     return null;
   }
@@ -29,7 +29,7 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 
   const data = await response.json();
   if (data.errors) {
-    throw new Error(`Shopify API error: ${data.errors.map((e: { message: string }) => e.message).join(', ')}`);
+    throw new Error(`Store API error: ${data.errors.map((e: { message: string }) => e.message).join(', ')}`);
   }
   return data;
 }

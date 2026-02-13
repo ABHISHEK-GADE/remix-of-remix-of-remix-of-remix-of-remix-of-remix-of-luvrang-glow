@@ -97,7 +97,7 @@ export default function CartDrawer() {
               disabled={isLoading || isSyncing}
               className="w-full bg-primary text-primary-foreground font-body text-sm font-medium py-3.5 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ExternalLink className="w-4 h-4" /> Checkout with Shopify</>}
+              {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ExternalLink className="w-4 h-4" /> Proceed to Checkout</>}
             </button>
           </div>
         )}

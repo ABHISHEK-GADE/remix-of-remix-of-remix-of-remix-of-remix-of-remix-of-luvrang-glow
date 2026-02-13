@@ -79,6 +79,7 @@ function formatCheckoutUrl(url: string): string {
   try {
     const u = new URL(url);
     u.searchParams.set('channel', 'online_store');
+    u.searchParams.set('return_to', 'https://luvrang.in');
     return u.toString();
   } catch {
     return url;
