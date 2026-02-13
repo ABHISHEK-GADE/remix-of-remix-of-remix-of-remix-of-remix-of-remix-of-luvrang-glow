@@ -20,11 +20,11 @@ export default function CollectionsSlider() {
 
   const collections = shopifyCollections?.length
     ? shopifyCollections.map((c) => ({
-        title: c.title,
-        handle: c.handle,
-        image: c.image?.url || festiveImg,
-        description: c.description || '',
-        count: c.products?.edges?.length || 0,
+        title: c.node.title,
+        handle: c.node.handle,
+        image: c.node.image?.url || festiveImg,
+        description: c.node.description || '',
+        count: c.node.products?.edges?.length || 0,
       }))
     : fallbackCollections;
 
@@ -52,14 +52,12 @@ export default function CollectionsSlider() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-              
               <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
                 <span className="inline-block text-[10px] uppercase tracking-widest font-body font-semibold text-accent mb-2">
                   {col.count}+ designs
                 </span>
                 <h3 className="font-display text-lg md:text-xl font-semibold text-background leading-tight">{col.title}</h3>
                 <p className="font-body text-background/60 text-xs mt-1 line-clamp-1">{col.description}</p>
-                
                 <span className="inline-flex items-center gap-1.5 mt-3 text-xs font-body font-medium text-accent group-hover:gap-2.5 transition-all duration-300">
                   Explore <ArrowRight size={13} />
                 </span>
