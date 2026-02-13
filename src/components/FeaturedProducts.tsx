@@ -1,43 +1,13 @@
-import type { ShopifyProduct } from '@/api/shopify';
+import { useQuery } from '@tanstack/react-query';
+import { getProducts } from '@/api/shopify';
 import ProductCard from './ProductCard';
 
-// Mock products for display when Shopify isn't connected
-const mockProducts: ShopifyProduct[] = [
-  {
-    id: '1', handle: 'royal-blue-mandala', title: 'Royal Blue Mandala Rangoli', description: '', descriptionHtml: '',
-    tags: [], productType: 'Rangoli',
-    images: { edges: [] },
-    variants: { edges: [{ node: { id: 'v1', title: 'Default Title', availableForSale: true, price: { amount: '1299', currencyCode: 'INR' }, compareAtPrice: null, selectedOptions: [], image: null } }] },
-    priceRange: { minVariantPrice: { amount: '1299', currencyCode: 'INR' }, maxVariantPrice: { amount: '1299', currencyCode: 'INR' } },
-    compareAtPriceRange: { minVariantPrice: { amount: '0', currencyCode: 'INR' }, maxVariantPrice: { amount: '0', currencyCode: 'INR' } },
-  },
-  {
-    id: '2', handle: 'golden-lotus', title: 'Golden Lotus Festive Set', description: '', descriptionHtml: '',
-    tags: [], productType: 'Rangoli',
-    images: { edges: [] },
-    variants: { edges: [{ node: { id: 'v2', title: 'Default Title', availableForSale: true, price: { amount: '1899', currencyCode: 'INR' }, compareAtPrice: { amount: '2499', currencyCode: 'INR' }, selectedOptions: [], image: null } }] },
-    priceRange: { minVariantPrice: { amount: '1899', currencyCode: 'INR' }, maxVariantPrice: { amount: '1899', currencyCode: 'INR' } },
-    compareAtPriceRange: { minVariantPrice: { amount: '2499', currencyCode: 'INR' }, maxVariantPrice: { amount: '2499', currencyCode: 'INR' } },
-  },
-  {
-    id: '3', handle: 'wedding-elegance', title: 'Wedding Elegance Collection', description: '', descriptionHtml: '',
-    tags: [], productType: 'Rangoli',
-    images: { edges: [] },
-    variants: { edges: [{ node: { id: 'v3', title: 'Default Title', availableForSale: true, price: { amount: '2599', currencyCode: 'INR' }, compareAtPrice: null, selectedOptions: [], image: null } }] },
-    priceRange: { minVariantPrice: { amount: '2599', currencyCode: 'INR' }, maxVariantPrice: { amount: '2599', currencyCode: 'INR' } },
-    compareAtPriceRange: { minVariantPrice: { amount: '0', currencyCode: 'INR' }, maxVariantPrice: { amount: '0', currencyCode: 'INR' } },
-  },
-  {
-    id: '4', handle: 'diwali-special', title: 'Diwali Special Rangoli', description: '', descriptionHtml: '',
-    tags: [], productType: 'Rangoli',
-    images: { edges: [] },
-    variants: { edges: [{ node: { id: 'v4', title: 'Default Title', availableForSale: true, price: { amount: '999', currencyCode: 'INR' }, compareAtPrice: { amount: '1499', currencyCode: 'INR' }, selectedOptions: [], image: null } }] },
-    priceRange: { minVariantPrice: { amount: '999', currencyCode: 'INR' }, maxVariantPrice: { amount: '999', currencyCode: 'INR' } },
-    compareAtPriceRange: { minVariantPrice: { amount: '1499', currencyCode: 'INR' }, maxVariantPrice: { amount: '1499', currencyCode: 'INR' } },
-  },
-];
-
 export default function FeaturedProducts() {
+  const { data: products, isLoading } = useQuery({
+    queryKey: ['products', 'featured'],
+    queryFn: () => getProducts(8),
+  });
+
   return (
     <section className="section-spacing bg-background">
       <div className="container-luxury">
@@ -46,11 +16,21 @@ export default function FeaturedProducts() {
           <p className="font-body text-muted-foreground mt-2 text-sm">Our most loved handmade pieces</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {mockProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="aspect-square rounded-lg bg-secondary animate-pulse" />
+            ))}
+          </div>
+        ) : products && products.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center font-body text-muted-foreground py-8">No products available yet.</p>
+        )}
       </div>
     </section>
   );

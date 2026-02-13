@@ -1,5 +1,5 @@
-const SHOPIFY_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || '';
-const STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || '';
+const SHOPIFY_DOMAIN = 'luvrang.myshopify.com';
+const STOREFRONT_TOKEN = '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';
 
 const STOREFRONT_URL = SHOPIFY_DOMAIN
   ? `https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`
