@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingBag, Menu, X, User, Search } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
 import { useState } from 'react';
+import { SearchDialog } from '@/components/SearchDialog';
+import logo from '@/assets/logo.svg';
 
 export default function Header() {
   const openCart = useCartStore(s => s.openCart);
   const totalItems = useCartStore(s => s.totalItems());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <>
@@ -16,8 +19,8 @@ export default function Header() {
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
-          <Link to="/" className="font-display text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-            LuvRang
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="LuvRang" className="h-10 md:h-12 w-auto" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 font-body text-sm tracking-wide">
@@ -27,14 +30,22 @@ export default function Header() {
             <Link to="/collections/everyday" className="text-foreground/70 hover:text-foreground transition-colors">Everyday</Link>
           </nav>
 
-          <button onClick={openCart} className="relative p-2 -mr-2 text-foreground" aria-label="Open cart">
-            <ShoppingBag size={22} />
-            {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                {totalItems}
-              </span>
-            )}
-          </button>
+          <div className="flex items-center gap-1">
+            <button onClick={() => setSearchOpen(true)} className="p-2 text-foreground" aria-label="Search">
+              <Search size={22} />
+            </button>
+            <Link to="/account" className="p-2 text-foreground" aria-label="Account">
+              <User size={22} />
+            </Link>
+            <button onClick={openCart} className="relative p-2 -mr-2 text-foreground" aria-label="Open cart">
+              <ShoppingBag size={22} />
+              {totalItems > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
 
         {mobileMenuOpen && (
@@ -46,6 +57,7 @@ export default function Header() {
           </nav>
         )}
       </header>
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </>
   );
 }
