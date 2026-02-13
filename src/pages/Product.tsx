@@ -1,16 +1,17 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useCart } from '@/contexts/CartContext';
+import { useCartStore } from '@/stores/cartStore';
 import { Minus, Plus, ChevronDown } from 'lucide-react';
 import { getProductByHandle, formatPrice } from '@/api/shopify';
-import type { ShopifyVariant } from '@/api/shopify';
+import { toast } from 'sonner';
 
 export default function Product() {
   const { handle } = useParams<{ handle: string }>();
-  const { addItem } = useCart();
+  const addItem = useCartStore(s => s.addItem);
+  const isLoading = useCartStore(s => s.isLoading);
 
-  const { data: product, isLoading } = useQuery({
+  const { data: product, isLoading: productLoading } = useQuery({
     queryKey: ['product', handle],
     queryFn: () => getProductByHandle(handle!),
     enabled: !!handle,
@@ -21,7 +22,7 @@ export default function Product() {
   const [careOpen, setCareOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
 
-  if (isLoading) {
+  if (productLoading) {
     return (
       <div className="container-luxury py-8 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
@@ -44,11 +45,20 @@ export default function Product() {
     );
   }
 
-  const variants = product.variants.edges.map((e) => e.node);
-  const selectedVariant: ShopifyVariant = variants[selectedVariantIndex] || variants[0];
+  const variants = product.variants.edges.map((e: { node: any }) => e.node);
+  const selectedVariant = variants[selectedVariantIndex] || variants[0];
 
-  const handleAddToCart = () => {
-    addItem(product, selectedVariant, quantity);
+  const handleAddToCart = async () => {
+    if (!selectedVariant) return;
+    await addItem({
+      product: { node: product },
+      variantId: selectedVariant.id,
+      variantTitle: selectedVariant.title,
+      price: selectedVariant.price,
+      quantity,
+      selectedOptions: selectedVariant.selectedOptions || [],
+    });
+    toast.success('Added to cart!', { position: 'top-center' });
   };
 
   const mainImage = selectedVariant.image || product.images.edges[0]?.node;
@@ -67,7 +77,7 @@ export default function Product() {
           </div>
           {product.images.edges.length > 1 && (
             <div className="grid grid-cols-4 gap-3">
-              {product.images.edges.slice(0, 4).map((img, i) => (
+              {product.images.edges.slice(0, 4).map((img: { node: { url: string; altText: string | null } }, i: number) => (
                 <div key={i} className="aspect-square rounded-md bg-secondary overflow-hidden cursor-pointer">
                   <img src={img.node.url} alt={img.node.altText || ''} className="w-full h-full object-cover" />
                 </div>
@@ -81,9 +91,9 @@ export default function Product() {
           <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground">{product.title}</h1>
 
           <div className="mt-4 flex items-baseline gap-3 font-body">
-            <span className="text-2xl font-semibold text-foreground">{formatPrice(selectedVariant.price)}</span>
+            <span className="text-2xl font-semibold text-foreground">{formatPrice(selectedVariant.price.amount, selectedVariant.price.currencyCode)}</span>
             {selectedVariant.compareAtPrice && parseFloat(selectedVariant.compareAtPrice.amount) > 0 && (
-              <span className="text-muted-foreground line-through">{formatPrice(selectedVariant.compareAtPrice)}</span>
+              <span className="text-muted-foreground line-through">{formatPrice(selectedVariant.compareAtPrice.amount, selectedVariant.compareAtPrice.currencyCode)}</span>
             )}
           </div>
 
@@ -101,7 +111,7 @@ export default function Product() {
                 {variants[0].selectedOptions?.[0]?.name || 'Option'}
               </label>
               <div className="flex flex-wrap gap-2">
-                {variants.map((v, i) => (
+                {variants.map((v: any, i: number) => (
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariantIndex(i)}
@@ -129,8 +139,12 @@ export default function Product() {
           </div>
 
           {/* Add to Cart */}
-          <button onClick={handleAddToCart} className="mt-8 w-full bg-primary text-primary-foreground font-body text-sm font-medium py-4 rounded-md hover:bg-primary/90 transition-colors">
-            Add to Cart — {formatPrice({ amount: String(parseFloat(selectedVariant.price.amount) * quantity), currencyCode: selectedVariant.price.currencyCode })}
+          <button
+            onClick={handleAddToCart}
+            disabled={isLoading}
+            className="mt-8 w-full bg-primary text-primary-foreground font-body text-sm font-medium py-4 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
+          >
+            {isLoading ? 'Adding...' : `Add to Cart — ${formatPrice(String(parseFloat(selectedVariant.price.amount) * quantity), selectedVariant.price.currencyCode)}`}
           </button>
 
           {/* Payment Notes */}

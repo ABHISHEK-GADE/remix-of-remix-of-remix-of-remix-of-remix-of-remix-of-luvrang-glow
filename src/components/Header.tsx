@@ -1,32 +1,25 @@
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Menu, X } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
+import { useCartStore } from '@/stores/cartStore';
 import { useState } from 'react';
 
 export default function Header() {
-  const { openCart, totalItems } = useCart();
+  const openCart = useCartStore(s => s.openCart);
+  const totalItems = useCartStore(s => s.totalItems());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>
-      {/* Header */}
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="container-luxury flex items-center justify-between h-16 md:h-20">
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 -ml-2 text-foreground"
-            aria-label="Toggle menu"
-          >
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden p-2 -ml-2 text-foreground" aria-label="Toggle menu">
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
-          {/* Logo */}
           <Link to="/" className="font-display text-2xl md:text-3xl font-bold tracking-tight text-foreground">
             LuvRang
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 font-body text-sm tracking-wide">
             <Link to="/" className="text-foreground/70 hover:text-foreground transition-colors">Home</Link>
             <Link to="/collections/festive" className="text-foreground/70 hover:text-foreground transition-colors">Festive</Link>
@@ -34,7 +27,6 @@ export default function Header() {
             <Link to="/collections/everyday" className="text-foreground/70 hover:text-foreground transition-colors">Everyday</Link>
           </nav>
 
-          {/* Cart */}
           <button onClick={openCart} className="relative p-2 -mr-2 text-foreground" aria-label="Open cart">
             <ShoppingBag size={22} />
             {totalItems > 0 && (
@@ -45,7 +37,6 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Nav */}
         {mobileMenuOpen && (
           <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-3 font-body text-sm animate-fade-in">
             <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-foreground">Home</Link>

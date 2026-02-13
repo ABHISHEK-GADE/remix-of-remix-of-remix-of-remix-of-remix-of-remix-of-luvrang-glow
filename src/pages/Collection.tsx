@@ -12,7 +12,6 @@ export default function Collection() {
     enabled: !!handle,
   });
 
-  // Fallback: fetch all products if no collection handle or collection not found
   const { data: allProducts, isLoading: productsLoading } = useQuery({
     queryKey: ['products'],
     queryFn: () => getProducts(20),
@@ -20,8 +19,8 @@ export default function Collection() {
   });
 
   const isLoading = handle ? collectionLoading : productsLoading;
-  const products = collection?.products?.edges?.map(e => e.node) ?? allProducts ?? [];
-  const title = collection?.title ?? handle?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) ?? 'All Products';
+  const products = collection?.products?.edges ?? allProducts ?? [];
+  const title = collection?.title ?? handle?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) ?? 'All Products';
   const description = collection?.description ?? '';
 
   return (
@@ -40,7 +39,7 @@ export default function Collection() {
       ) : products.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.node.id} product={product} />
           ))}
         </div>
       ) : (
