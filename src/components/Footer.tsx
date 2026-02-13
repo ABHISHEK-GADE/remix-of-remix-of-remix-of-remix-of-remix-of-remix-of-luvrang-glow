@@ -27,10 +27,11 @@ export default function Footer() {
           <div>
             <h4 className="font-body text-xs tracking-widest uppercase mb-4 text-background/40">Information</h4>
             <ul className="space-y-2 font-body text-sm">
-              <li><span className="text-background/60">Shipping & Delivery</span></li>
-              <li><span className="text-background/60">Care Instructions</span></li>
-              <li><span className="text-background/60">Return Policy</span></li>
-              <li><span className="text-background/60">Contact Us</span></li>
+              <li><Link to="/shipping-policy" className="text-background/60 hover:text-background transition-colors">Shipping & Delivery</Link></li>
+              <li><Link to="/refund-policy" className="text-background/60 hover:text-background transition-colors">Return & Refund Policy</Link></li>
+              <li><Link to="/privacy-policy" className="text-background/60 hover:text-background transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="text-background/60 hover:text-background transition-colors">Terms of Service</Link></li>
+              <li><Link to="/contact" className="text-background/60 hover:text-background transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
