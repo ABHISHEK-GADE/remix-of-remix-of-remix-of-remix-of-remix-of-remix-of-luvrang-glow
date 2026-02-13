@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MarketingBar from "@/components/MarketingBar";
 import CartDrawer from "@/components/CartDrawer";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import Product from "./pages/Product";
@@ -23,6 +24,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <AnnouncementBar />
           <Header />
           <main className="min-h-screen">
