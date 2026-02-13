@@ -21,7 +21,7 @@ const sections = [
   {
     icon: Mail,
     title: 'How to Request a Return',
-    content: 'Email us at support@luvrang.com with your order number and photos of the issue. Our team will guide you through the return process within 24 hours.',
+    content: 'Email us at support@luvrang.in with your order number and photos of the issue. Our team will guide you through the return process within 24 hours.',
   },
 ];
 

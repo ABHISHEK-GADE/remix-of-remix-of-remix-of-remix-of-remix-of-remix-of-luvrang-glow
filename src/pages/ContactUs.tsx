@@ -77,7 +77,7 @@ export default function ContactUs() {
           <div className="lg:col-span-2 space-y-4 animate-fade-up" style={{ animationDelay: '0.2s' }}>
             {[
               { icon: MessageCircle, title: 'WhatsApp', value: '+91 7028696998', href: 'https://wa.me/917028696998', sub: 'Fastest way to reach us' },
-              { icon: Mail, title: 'Email', value: 'support@luvrang.com', href: 'mailto:support@luvrang.com', sub: 'For detailed inquiries' },
+              { icon: Mail, title: 'Email', value: 'support@luvrang.in', href: 'mailto:support@luvrang.in', sub: 'For detailed inquiries' },
               { icon: Phone, title: 'Phone', value: '+91 7028696998', href: 'tel:+917028696998', sub: 'Mon-Sat, 10AM-7PM' },
               { icon: MapPin, title: 'Location', value: 'India', href: undefined, sub: 'PAN India Shipping' },
             ].map((item) => (

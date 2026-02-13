@@ -21,7 +21,7 @@ const sections = [
   {
     icon: Mail,
     title: 'Contact Us',
-    content: 'For privacy-related queries, reach out to us at support@luvrang.com. We aim to respond within 24-48 hours.',
+    content: 'For privacy-related queries, reach out to us at support@luvrang.in. We aim to respond within 24-48 hours.',
   },
 ];
 
