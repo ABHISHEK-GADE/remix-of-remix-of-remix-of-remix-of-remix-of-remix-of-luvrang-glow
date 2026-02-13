@@ -1,46 +1,103 @@
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Menu, X, User, Search } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { ShoppingBag, Menu, X, User, Search, Heart } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchDialog } from '@/components/SearchDialog';
 import logo from '@/assets/logo.svg';
+
+const navLinks = [
+  { to: '/', label: 'Home' },
+  { to: '/collections/festive', label: 'Festive' },
+  { to: '/collections/wedding', label: 'Wedding' },
+  { to: '/collections/everyday', label: 'Everyday' },
+];
 
 export default function Header() {
   const openCart = useCartStore(s => s.openCart);
   const totalItems = useCartStore(s => s.totalItems());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Add scroll shadow
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+      <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-300 ${scrolled ? 'shadow-soft' : ''}`}>
         <div className="container-luxury flex items-center justify-between h-16 md:h-20">
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden p-2 -ml-2 text-foreground" aria-label="Toggle menu">
+          {/* Mobile menu toggle */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 -ml-2 text-foreground"
+            aria-label="Toggle menu"
+          >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
+          {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src={logo} alt="LuvRang" className="h-14 md:h-16 w-auto" />
           </Link>
 
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 font-body text-sm tracking-wide">
-            <Link to="/" className="text-foreground/70 hover:text-foreground transition-colors">Home</Link>
-            <Link to="/collections/festive" className="text-foreground/70 hover:text-foreground transition-colors">Festive</Link>
-            <Link to="/collections/wedding" className="text-foreground/70 hover:text-foreground transition-colors">Wedding</Link>
-            <Link to="/collections/everyday" className="text-foreground/70 hover:text-foreground transition-colors">Everyday</Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`transition-colors ${
+                  location.pathname === link.to
+                    ? 'text-primary font-medium'
+                    : 'text-foreground/70 hover:text-foreground'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
-          <div className="flex items-center gap-1">
-            <button onClick={() => setSearchOpen(true)} className="p-2 text-foreground" aria-label="Search">
-              <Search size={22} />
+          {/* Action Icons */}
+          <div className="flex items-center gap-0.5 md:gap-1">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2 text-foreground/70 hover:text-foreground transition-colors"
+              aria-label="Search"
+            >
+              <Search size={20} />
             </button>
-            <Link to="/account" className="p-2 text-foreground" aria-label="Account">
-              <User size={22} />
+            <Link
+              to="/wishlist"
+              className="hidden sm:flex p-2 text-foreground/70 hover:text-foreground transition-colors"
+              aria-label="Wishlist"
+            >
+              <Heart size={20} />
             </Link>
-            <button onClick={openCart} className="relative p-2 -mr-2 text-foreground" aria-label="Open cart">
-              <ShoppingBag size={22} />
+            <Link
+              to="/account"
+              className="p-2 text-foreground/70 hover:text-foreground transition-colors"
+              aria-label="Account"
+            >
+              <User size={20} />
+            </Link>
+            <button
+              onClick={openCart}
+              className="relative p-2 -mr-2 text-foreground/70 hover:text-foreground transition-colors"
+              aria-label="Open cart"
+            >
+              <ShoppingBag size={20} />
               {totalItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center animate-fade-in">
                   {totalItems}
                 </span>
               )}
@@ -48,12 +105,29 @@ export default function Header() {
           </div>
         </div>
 
+        {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-3 font-body text-sm animate-fade-in">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-foreground">Home</Link>
-            <Link to="/collections/festive" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-foreground/70">Festive</Link>
-            <Link to="/collections/wedding" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-foreground/70">Wedding</Link>
-            <Link to="/collections/everyday" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-foreground/70">Everyday</Link>
+          <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`block py-3 px-2 rounded-md transition-colors ${
+                  location.pathname === link.to
+                    ? 'text-primary bg-primary/5 font-medium'
+                    : 'text-foreground/70 hover:text-foreground hover:bg-secondary/50'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <hr className="border-border my-2" />
+            <Link to="/wishlist" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
+              <Heart size={18} /> Wishlist
+            </Link>
+            <Link to="/account" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
+              <User size={18} /> My Account
+            </Link>
           </nav>
         )}
       </header>
