@@ -6,15 +6,15 @@ import { SearchDialog } from '@/components/SearchDialog';
 import logo from '@/assets/logo.svg';
 
 const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/collections/festive', label: 'Festive' },
-  { to: '/collections/wedding', label: 'Wedding' },
-  { to: '/collections/everyday', label: 'Everyday' },
-];
+{ to: '/', label: 'Home' },
+{ to: '/collections/festive', label: 'Festive' },
+{ to: '/collections/wedding', label: 'Wedding' },
+{ to: '/collections/everyday', label: 'Everyday' }];
+
 
 export default function Header() {
-  const openCart = useCartStore(s => s.openCart);
-  const totalItems = useCartStore(s => s.totalItems());
+  const openCart = useCartStore((s) => s.openCart);
+  const totalItems = useCartStore((s) => s.totalItems());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -41,30 +41,30 @@ export default function Header() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 -ml-2 text-foreground"
-              aria-label="Toggle menu"
-            >
+              aria-label="Toggle menu">
+
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
             <Link to="/" className="flex items-center">
-              <img src={logo} alt="LuvRang" className="h-14 md:h-16 w-auto" />
+              <img alt="LuvRang" className="h-14 md:h-16 w-auto" src="/lovable-uploads/9517ffe1-54ed-44a8-99f4-b9c452b0e430.png" />
             </Link>
           </div>
 
           {/* Center: Desktop Nav */}
           <nav className="hidden md:flex items-center justify-center gap-8 font-body text-sm tracking-wide">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`transition-colors ${
-                  location.pathname === link.to
-                    ? 'text-primary font-medium'
-                    : 'text-foreground/70 hover:text-foreground'
-                }`}
-              >
+            {navLinks.map((link) =>
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`transition-colors ${
+              location.pathname === link.to ?
+              'text-primary font-medium' :
+              'text-foreground/70 hover:text-foreground'}`
+              }>
+
                 {link.label}
               </Link>
-            ))}
+            )}
           </nav>
 
           {/* Right: Action Icons */}
@@ -72,55 +72,55 @@ export default function Header() {
             <button
               onClick={() => setSearchOpen(true)}
               className="p-2 text-foreground/70 hover:text-foreground transition-colors"
-              aria-label="Search"
-            >
+              aria-label="Search">
+
               <Search size={20} />
             </button>
             <Link
               to="/wishlist"
               className="hidden sm:flex p-2 text-foreground/70 hover:text-foreground transition-colors"
-              aria-label="Wishlist"
-            >
+              aria-label="Wishlist">
+
               <Heart size={20} />
             </Link>
             <Link
               to="/account"
               className="p-2 text-foreground/70 hover:text-foreground transition-colors"
-              aria-label="Account"
-            >
+              aria-label="Account">
+
               <User size={20} />
             </Link>
             <button
               onClick={openCart}
               className="relative p-2 -mr-2 text-foreground/70 hover:text-foreground transition-colors"
-              aria-label="Open cart"
-            >
+              aria-label="Open cart">
+
               <ShoppingBag size={20} />
-              {totalItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center animate-fade-in">
+              {totalItems > 0 &&
+              <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center animate-fade-in">
                   {totalItems}
                 </span>
-              )}
+              }
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`block py-3 px-2 rounded-md transition-colors ${
-                  location.pathname === link.to
-                    ? 'text-primary bg-primary/5 font-medium'
-                    : 'text-foreground/70 hover:text-foreground hover:bg-secondary/50'
-                }`}
-              >
+        {mobileMenuOpen &&
+        <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
+            {navLinks.map((link) =>
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`block py-3 px-2 rounded-md transition-colors ${
+            location.pathname === link.to ?
+            'text-primary bg-primary/5 font-medium' :
+            'text-foreground/70 hover:text-foreground hover:bg-secondary/50'}`
+            }>
+
                 {link.label}
               </Link>
-            ))}
+          )}
             <hr className="border-border my-2" />
             <Link to="/wishlist" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
               <Heart size={18} /> Wishlist
@@ -129,9 +129,9 @@ export default function Header() {
               <User size={18} /> My Account
             </Link>
           </nav>
-        )}
+        }
       </header>
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
-    </>
-  );
+    </>);
+
 }
