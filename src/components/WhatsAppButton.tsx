@@ -1,6 +1,6 @@
 import { MessageCircle } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '919876543210'; // Replace with actual number
+const WHATSAPP_NUMBER = '917028696998';
 const WHATSAPP_MESSAGE = encodeURIComponent('Hi! I have a query about LuvRang products.');
 
 export default function WhatsAppButton() {
