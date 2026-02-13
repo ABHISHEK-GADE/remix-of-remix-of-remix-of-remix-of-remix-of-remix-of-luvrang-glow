@@ -8,10 +8,15 @@ import VideoGuide from '@/components/VideoGuide';
 import WhyLuvRang from '@/components/WhyLuvRang';
 import OffersSection from '@/components/OffersSection';
 import CODBanner from '@/components/CODBanner';
+import SEO from '@/components/SEO';
 
 const Index = () => {
   return (
     <>
+      <SEO
+        title="Premium Handmade Reusable Rangoli"
+        description="Shop LuvRang's premium handmade, reusable rangoli decor. Festive, wedding & everyday designs. Free shipping. COD available. PAN India delivery."
+      />
       <HeroSlider />
       <CollectionsSlider />
       <FeaturedProducts />
