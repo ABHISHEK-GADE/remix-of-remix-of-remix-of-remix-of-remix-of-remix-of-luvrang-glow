@@ -36,7 +36,7 @@ export default function CollectionsSlider() {
   };
 
   return (
-    <section className="section-spacing bg-background">
+    <section className="py-10 md:py-14 bg-background">
       <div className="container-luxury">
         <div className="flex items-end justify-between mb-8">
           <div>
