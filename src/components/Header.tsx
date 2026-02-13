@@ -9,11 +9,6 @@ export default function Header() {
 
   return (
     <>
-      {/* Announcement Bar */}
-      <div className="bg-primary text-primary-foreground text-center py-2 px-4 text-xs sm:text-sm font-body tracking-wide">
-        PAN India Shipping • Made to Order • Premium Handmade Rangoli
-      </div>
-
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="container-luxury flex items-center justify-between h-16 md:h-20">
