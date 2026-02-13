@@ -36,29 +36,29 @@ export default function CollectionsSlider() {
   };
 
   return (
-    <section className="py-10 md:py-14 bg-background">
+    <section className="py-8 md:py-10 bg-background">
       <div className="container-luxury">
-        <div className="flex items-end justify-between mb-8">
+        <div className="flex items-end justify-between mb-5">
           <div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Shop Collections</h2>
-            <p className="font-body text-muted-foreground mt-1 text-sm">Find the perfect rangoli for your occasion</p>
+            <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">Shop Collections</h2>
+            <p className="font-body text-muted-foreground mt-1 text-xs">Find the perfect rangoli for your occasion</p>
           </div>
           <div className="hidden sm:flex gap-2">
-            <button onClick={() => scroll('left')} className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors" aria-label="Scroll left">
-              <ChevronLeft size={18} />
+            <button onClick={() => scroll('left')} className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors" aria-label="Scroll left">
+              <ChevronLeft size={16} />
             </button>
-            <button onClick={() => scroll('right')} className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors" aria-label="Scroll right">
-              <ChevronRight size={18} />
+            <button onClick={() => scroll('right')} className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors" aria-label="Scroll right">
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>
 
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 -mx-4 px-4">
+        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 -mx-4 px-4">
           {collections.map((col) => (
             <Link
               key={col.handle}
               to={`/collections/${col.handle}`}
-              className="group relative overflow-hidden rounded-lg aspect-[3/4] min-w-[260px] sm:min-w-[300px] md:min-w-[320px] flex-shrink-0 snap-start hover-lift"
+              className="group relative overflow-hidden rounded-lg aspect-[4/5] min-w-[180px] sm:min-w-[200px] md:min-w-[220px] flex-shrink-0 snap-start hover-lift"
             >
               <img
                 src={typeof col.image === 'string' ? col.image : col.image}
