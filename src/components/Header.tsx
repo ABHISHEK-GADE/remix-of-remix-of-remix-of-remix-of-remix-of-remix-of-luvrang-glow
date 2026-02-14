@@ -88,7 +88,7 @@ export default function Header() {
               <Heart size={20} />
             </Link>
             <a
-              href="https://account.luvrang.in"
+              href="https://shop.luvrang.in/account/login"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-foreground/70 hover:text-foreground transition-colors"
@@ -133,7 +133,7 @@ export default function Header() {
             <Link to="/wishlist" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
               <Heart size={18} /> Wishlist
             </Link>
-            <a href="https://account.luvrang.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
+            <a href="https://shop.luvrang.in/account/login" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
               <User size={18} /> My Account
             </a>
           </nav>
