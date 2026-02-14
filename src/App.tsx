@@ -15,7 +15,7 @@ import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import CollectionsPage from "./pages/Collections";
 import Product from "./pages/Product";
-import Account from "./pages/Account";
+
 import Wishlist from "./pages/Wishlist";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -50,7 +50,7 @@ function AppContent() {
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:handle" element={<Collection />} />
           <Route path="/product/:handle" element={<Product />} />
-          <Route path="/account" element={<Account />} />
+          
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
