@@ -1,68 +1,100 @@
-import { ExternalLink, User, Package, MapPin, LogOut } from 'lucide-react';
+import { ExternalLink, User, Package, MapPin, Heart, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
-import PageHeader from '@/components/PageHeader';
 
 export default function Account() {
   return (
     <>
       <SEO title="My Account – LuvRang" description="Manage your LuvRang account, orders, and preferences." />
-      <PageHeader title="My Account" breadcrumb={[{ label: 'Account' }]} />
 
-      <section className="container-luxury py-10 md:py-16">
-        <div className="max-w-2xl mx-auto space-y-6">
-          {/* Login / Account Access Card */}
-          <div className="rounded-xl border border-border bg-card p-6 md:p-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+      <div className="container-luxury section-spacing">
+        {/* Hero */}
+        <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-up">
+          <p className="font-body text-xs tracking-widest uppercase text-primary mb-3">Your Account</p>
+          <h1 className="font-display text-3xl md:text-5xl font-bold mb-5">
+            Welcome to{' '}
+            <span className="text-gradient-gold">LuvRang</span>
+          </h1>
+          <p className="font-body text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto">
+            Sign in to manage your orders, save addresses, and keep track of your favourite rangoli designs.
+          </p>
+        </div>
+
+        {/* Sign In Card */}
+        <div className="max-w-md mx-auto mb-14 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+          <div className="rounded-xl bg-secondary/50 border border-border/50 p-8 text-center space-y-5 hover-lift">
+            <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mx-auto">
               <User size={28} className="text-primary" />
             </div>
-            <h2 className="font-display text-xl md:text-2xl text-foreground">Welcome to LuvRang</h2>
-            <p className="text-muted-foreground text-sm max-w-md mx-auto">
-              Sign in to your account to view orders, manage addresses, and more.
-            </p>
+            <div>
+              <h2 className="font-display text-xl md:text-2xl font-semibold mb-2">Account Access</h2>
+              <p className="font-body text-sm text-muted-foreground leading-relaxed">
+                Sign in to your Shopify-powered account to view orders, manage addresses, and more.
+              </p>
+            </div>
             <a
               href="https://shop.luvrang.in/account/login"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-body text-sm font-medium px-8 py-3.5 rounded-md hover:bg-primary/90 transition-colors"
             >
               Sign In / Register <ExternalLink size={16} />
             </a>
           </div>
+        </div>
 
-          {/* Quick Links */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <a
-              href="https://shop.luvrang.in/account"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 hover:border-primary/30 hover:shadow-soft transition-all text-center"
-            >
-              <Package size={22} className="text-primary" />
-              <span className="text-sm font-medium text-foreground">My Orders</span>
-              <span className="text-xs text-muted-foreground">Track & manage orders</span>
-            </a>
-            <a
-              href="https://shop.luvrang.in/account"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 hover:border-primary/30 hover:shadow-soft transition-all text-center"
-            >
-              <MapPin size={22} className="text-primary" />
-              <span className="text-sm font-medium text-foreground">Addresses</span>
-              <span className="text-xs text-muted-foreground">Manage saved addresses</span>
-            </a>
-            <Link
-              to="/wishlist"
-              className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-5 hover:border-primary/30 hover:shadow-soft transition-all text-center"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              <span className="text-sm font-medium text-foreground">Wishlist</span>
-              <span className="text-xs text-muted-foreground">Your saved items</span>
-            </Link>
+        {/* Quick Links */}
+        <div className="max-w-3xl mx-auto mb-16">
+          <div className="text-center mb-10 animate-fade-up" style={{ animationDelay: '0.15s' }}>
+            <p className="font-body text-xs tracking-widest uppercase text-primary mb-2">Quick Access</p>
+            <h2 className="font-display text-2xl md:text-3xl font-semibold">Manage Your Account</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: Package, title: 'My Orders', desc: 'Track & manage orders', href: 'https://shop.luvrang.in/account', external: true },
+              { icon: MapPin, title: 'Addresses', desc: 'Manage saved addresses', href: 'https://shop.luvrang.in/account', external: true },
+              { icon: Heart, title: 'Wishlist', desc: 'Your saved items', to: '/wishlist' },
+              { icon: ShoppingBag, title: 'Shop Now', desc: 'Browse all products', to: '/shop' },
+            ].map((item, i) => {
+              const content = (
+                <>
+                  <div className="w-12 h-12 mb-4 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <item.icon size={22} className="text-primary" />
+                  </div>
+                  <h3 className="font-display text-base font-semibold mb-1">{item.title}</h3>
+                  <p className="font-body text-xs text-muted-foreground">{item.desc}</p>
+                </>
+              );
+              const cls = "flex flex-col items-center text-center p-6 rounded-xl bg-secondary/50 border border-border/50 hover-lift animate-fade-up";
+
+              return item.to ? (
+                <Link key={item.title} to={item.to} className={cls} style={{ animationDelay: `${0.2 + i * 0.08}s` }}>
+                  {content}
+                </Link>
+              ) : (
+                <a key={item.title} href={item.href} target="_blank" rel="noopener noreferrer" className={cls} style={{ animationDelay: `${0.2 + i * 0.08}s` }}>
+                  {content}
+                </a>
+              );
+            })}
           </div>
         </div>
-      </section>
+
+        {/* CTA */}
+        <section className="text-center py-16 px-8 rounded-2xl bg-primary/5 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+          <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">Need Help With Your Order?</h2>
+          <p className="font-body text-muted-foreground mb-8 max-w-lg mx-auto">
+            Our team is always ready to assist you with custom orders, tracking, or any questions.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-block bg-primary text-primary-foreground font-body text-sm font-medium px-8 py-3.5 rounded-md hover:bg-primary/90 transition-colors"
+          >
+            Contact Us
+          </Link>
+        </section>
+      </div>
     </>
   );
 }
