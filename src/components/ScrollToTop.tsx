@@ -7,18 +7,21 @@ export default function ScrollToTop() {
   const navType = useNavigationType();
   const [showButton, setShowButton] = useState(false);
 
-  // Scroll to top on route change
+  // Scroll to top on every route change (including initial load)
   useEffect(() => {
-    if (navType !== 'POP') {
-      // Immediate scroll
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      // Fallback after layout shifts (e.g. images loading in hero)
-      const timer = setTimeout(() => {
+    // Immediate scroll
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // Multiple fallbacks to beat layout shifts from lazy-loaded images/components
+    const timers = [50, 150, 300, 600].map(ms =>
+      setTimeout(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [pathname, navType]);
+      }, ms)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [pathname]);
 
   // Show/hide back-to-top button
   useEffect(() => {
