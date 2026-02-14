@@ -8,7 +8,7 @@ import logo from '@/assets/logo.svg';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/collections', label: 'Collections' },
-  { to: '/collections/festive', label: 'Shop', matchPrefix: '/product' },
+  { to: '/shop', label: 'Shop', matchPrefix: '/product' },
   { to: '/about', label: 'About Us' },
   { to: '/contact', label: 'Contact Us' },
 ];
