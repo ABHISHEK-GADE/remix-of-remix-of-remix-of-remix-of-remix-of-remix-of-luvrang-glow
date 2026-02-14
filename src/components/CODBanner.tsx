@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function CODBanner() {
   return (
-    <section className="bg-primary text-primary-foreground py-12 md:py-16">
+    <section className="bg-primary text-primary-foreground py-10 md:py-16">
       <div className="container-luxury">
         <div className="text-center mb-10">
           <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">
@@ -14,7 +14,7 @@ export default function CODBanner() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
+        <div className="grid grid-cols-3 gap-3 sm:gap-4 max-w-3xl mx-auto mb-10">
           {[
             { icon: CreditCard, title: 'COD Available', desc: 'Cash on Delivery at just \u20B959' },
             { icon: Truck, title: 'Free Prepaid Shipping', desc: 'All prepaid orders ship free' },
@@ -22,12 +22,12 @@ export default function CODBanner() {
           ].map((item, i) => (
             <div
               key={item.title}
-              className="text-center p-5 rounded-xl bg-primary-foreground/10 backdrop-blur-sm animate-fade-up"
+              className="text-center p-3 sm:p-5 rounded-xl bg-primary-foreground/10 backdrop-blur-sm animate-fade-up"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
-              <item.icon size={24} className="mx-auto mb-3 text-accent" />
-              <h3 className="font-display text-sm font-semibold mb-1">{item.title}</h3>
-              <p className="font-body text-primary-foreground/60 text-xs">{item.desc}</p>
+              <item.icon size={20} className="mx-auto mb-2 sm:mb-3 text-accent" />
+              <h3 className="font-display text-xs sm:text-sm font-semibold mb-0.5 sm:mb-1">{item.title}</h3>
+              <p className="font-body text-primary-foreground/60 text-[10px] sm:text-xs hidden sm:block">{item.desc}</p>
             </div>
           ))}
         </div>

@@ -37,23 +37,23 @@ export default function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-300 ${scrolled ? 'shadow-soft' : ''}`}>
-        <div className="container-luxury grid grid-cols-3 items-center h-16 md:h-20">
+        <div className="container-luxury grid grid-cols-3 items-center h-14 sm:h-16 md:h-20">
           {/* Left: Logo + mobile menu */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 -ml-2 text-foreground"
+              className="lg:hidden p-2 -ml-2 text-foreground"
               aria-label="Toggle menu">
 
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
             <Link to="/" className="flex items-center">
-              <img alt="LuvRang" className="h-14 md:h-16 w-auto" src="/lovable-uploads/9517ffe1-54ed-44a8-99f4-b9c452b0e430.png" />
+              <img alt="LuvRang" className="h-10 sm:h-14 md:h-16 w-auto" src="/lovable-uploads/9517ffe1-54ed-44a8-99f4-b9c452b0e430.png" />
             </Link>
           </div>
 
           {/* Center: Desktop Nav */}
-          <nav className="hidden md:flex items-center justify-center gap-6 font-body text-sm tracking-wide whitespace-nowrap">
+          <nav className="hidden lg:flex items-center justify-center gap-6 font-body text-sm tracking-wide whitespace-nowrap">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.to || 
                 (link.label === 'Collections' && location.pathname.startsWith('/collections')) ||
@@ -112,7 +112,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen &&
-        <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
+        <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.to || 
                 (link.label === 'Collections' && location.pathname.startsWith('/collections')) ||

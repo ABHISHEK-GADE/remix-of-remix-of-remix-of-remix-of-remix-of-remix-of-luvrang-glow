@@ -105,7 +105,7 @@ export default function Product() {
         <span className="text-foreground truncate max-w-[200px]">{product.title}</span>
       </nav>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
         {/* Image Gallery */}
         <div className="space-y-4">
           <div className="aspect-square rounded-xl bg-secondary overflow-hidden relative group">

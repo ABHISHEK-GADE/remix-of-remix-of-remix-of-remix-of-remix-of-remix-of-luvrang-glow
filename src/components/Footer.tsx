@@ -5,9 +5,9 @@ export default function Footer() {
   return (
     <footer className="bg-foreground text-background">
       <div className="container-luxury py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
           {/* Brand */}
-          <div className="md:col-span-1">
+          <div className="col-span-2 sm:col-span-2 md:col-span-1">
             <Link to="/">
               <img alt="LuvRang" className="h-12 w-auto mb-4" src="/lovable-uploads/c215f2b6-eda0-4abe-bddd-d297d28651ad.png" />
             </Link>

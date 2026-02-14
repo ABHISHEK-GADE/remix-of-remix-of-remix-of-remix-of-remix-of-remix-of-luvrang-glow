@@ -44,7 +44,7 @@ export default function HeroSlider() {
   }, [next]);
 
   return (
-    <section className="relative overflow-hidden h-[400px] sm:h-[480px] md:h-[560px] lg:h-[640px] xl:h-[720px]">
+    <section className="relative overflow-hidden h-[50svh] sm:h-[480px] md:h-[560px] lg:h-[640px] xl:h-[720px]">
       {slides.map((slide, i) => (
         <div
           key={i}
@@ -66,14 +66,14 @@ export default function HeroSlider() {
         <div className="container-luxury text-center">
           <h1
             key={`title-${active}`}
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-background leading-tight max-w-4xl mx-auto animate-fade-up"
+            className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-background leading-tight max-w-4xl mx-auto animate-fade-up px-4"
           >
             {slides[active].title} —{' '}
             <span className="text-gradient-gold">{slides[active].highlight}</span>
           </h1>
           <p
             key={`sub-${active}`}
-            className="font-body text-background/80 text-base md:text-lg mt-6 max-w-xl mx-auto animate-fade-up"
+            className="font-body text-background/80 text-sm md:text-lg mt-4 md:mt-6 max-w-xl mx-auto animate-fade-up px-4"
             style={{ animationDelay: '0.15s' }}
           >
             {slides[active].subtitle}
@@ -81,7 +81,7 @@ export default function HeroSlider() {
           <Link
             key={`cta-${active}`}
             to={slides[active].link}
-            className="inline-block mt-8 bg-background text-foreground font-body text-sm font-medium tracking-wide px-8 py-3.5 rounded-md hover:bg-background/90 transition-colors animate-fade-up"
+            className="inline-block mt-6 md:mt-8 bg-background text-foreground font-body text-xs sm:text-sm font-medium tracking-wide px-6 sm:px-8 py-3 sm:py-3.5 rounded-md hover:bg-background/90 transition-colors animate-fade-up"
             style={{ animationDelay: '0.3s' }}
           >
             {slides[active].cta}
