@@ -8,7 +8,7 @@ export default function ScrollToTop() {
 
   // Scroll to top on route change
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
 
   // Show/hide back-to-top button
