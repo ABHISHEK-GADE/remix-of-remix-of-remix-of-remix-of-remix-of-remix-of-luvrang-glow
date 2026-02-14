@@ -61,7 +61,6 @@ function AppContent() {
       <MarketingBar />
       <CartDrawer />
       <WhatsAppButton />
-      <CartDrawer />
     </>
   );
 }
