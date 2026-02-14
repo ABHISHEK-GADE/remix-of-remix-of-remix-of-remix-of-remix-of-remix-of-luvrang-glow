@@ -7,7 +7,7 @@ import logo from '@/assets/logo.svg';
 
 const navLinks = [
   { to: '/', label: 'Home' },
-  { to: '/collections/festive', label: 'Collections' },
+  { to: '/collections', label: 'Collections' },
   { to: '/collections/festive', label: 'Shop', matchPrefix: '/product' },
   { to: '/about', label: 'About Us' },
   { to: '/contact', label: 'Contact Us' },
@@ -56,7 +56,7 @@ export default function Header() {
           <nav className="hidden lg:flex items-center justify-center gap-6 font-body text-sm tracking-wide whitespace-nowrap">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.to || 
-                (link.label === 'Collections' && location.pathname.startsWith('/collections')) ||
+                (link.label === 'Collections' && location.pathname.startsWith('/collections/')) ||
                 (link.label === 'Shop' && location.pathname.startsWith('/product'));
               return (
                 <Link
@@ -115,7 +115,7 @@ export default function Header() {
         <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.to || 
-                (link.label === 'Collections' && location.pathname.startsWith('/collections')) ||
+                (link.label === 'Collections' && location.pathname.startsWith('/collections/')) ||
                 (link.label === 'Shop' && location.pathname.startsWith('/product'));
               return (
                 <Link

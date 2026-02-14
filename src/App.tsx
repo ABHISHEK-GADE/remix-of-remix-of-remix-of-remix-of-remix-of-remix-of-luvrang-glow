@@ -13,6 +13,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Index from "./pages/Index";
 import Collection from "./pages/Collection";
+import CollectionsPage from "./pages/Collections";
 import Product from "./pages/Product";
 import Account from "./pages/Account";
 import Wishlist from "./pages/Wishlist";
@@ -44,6 +45,7 @@ function AppContent() {
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:handle" element={<Collection />} />
           <Route path="/product/:handle" element={<Product />} />
           <Route path="/account" element={<Account />} />
