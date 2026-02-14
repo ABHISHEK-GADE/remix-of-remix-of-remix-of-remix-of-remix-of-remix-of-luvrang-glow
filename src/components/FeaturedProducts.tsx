@@ -45,7 +45,7 @@ export default function FeaturedProducts() {
         {products && products.length > 0 && (
           <div className="text-center mt-10 animate-fade-up" style={{ animationDelay: '0.3s' }}>
             <Link
-              to="/collections/festive"
+              to="/shop"
               className="inline-block border border-primary text-primary font-body text-sm font-medium px-8 py-3 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               View All Products

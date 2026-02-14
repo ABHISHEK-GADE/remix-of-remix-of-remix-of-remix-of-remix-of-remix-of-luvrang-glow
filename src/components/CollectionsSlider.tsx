@@ -3,48 +3,36 @@ import { useQuery } from '@tanstack/react-query';
 import { getCollections } from '@/api/shopify';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import festiveImg from '@/assets/collection-festive.jpg';
-import weddingImg from '@/assets/collection-wedding.jpg';
-import everydayImg from '@/assets/collection-everyday.jpg';
-
-const fallbackCollections = [
-  { title: 'Festive', handle: 'festive', image: festiveImg, description: 'Diwali, Navratri & more', count: 24 },
-  { title: 'Wedding', handle: 'wedding', image: weddingImg, description: 'Bridal & ceremony decor', count: 18 },
-  { title: 'Everyday Decor', handle: 'everyday', image: everydayImg, description: 'Elegant daily touches', count: 12 },
-];
 
 export default function CollectionsSlider() {
-  const { data: shopifyCollections } = useQuery({
+  const { data: shopifyCollections, isLoading } = useQuery({
     queryKey: ['collections'],
     queryFn: () => getCollections(10),
   });
 
-  const collections = shopifyCollections?.length
-    ? shopifyCollections.map((c) => ({
-        title: c.node.title,
-        handle: c.node.handle,
-        image: c.node.image?.url || festiveImg,
-        description: c.node.description || '',
-        count: c.node.products?.edges?.length || 0,
-      }))
-    : fallbackCollections;
+  const collections = (shopifyCollections || []).map((c) => ({
+    title: c.node.title,
+    handle: c.node.handle,
+    image: c.node.image?.url || '',
+    description: c.node.description || '',
+    count: c.node.products?.edges?.length || 0,
+  }));
 
   const [active, setActive] = useState(0);
   const total = collections.length;
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const next = useCallback(() => setActive((p) => (p + 1) % total), [total]);
-  const prev = useCallback(() => setActive((p) => (p - 1 + total) % total), [total]);
+  const next = useCallback(() => { if (total > 0) setActive((p) => (p + 1) % total); }, [total]);
+  const prev = useCallback(() => { if (total > 0) setActive((p) => (p - 1 + total) % total); }, [total]);
 
-  // Auto-slide every 4 seconds
   useEffect(() => {
+    if (total === 0) return;
     const timer = setInterval(next, 4000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, total]);
 
   const hasInteracted = useRef(false);
 
-  // Scroll active card into view on mobile — only after user/auto interaction
   useEffect(() => {
     if (!hasInteracted.current) {
       hasInteracted.current = true;
@@ -57,6 +45,28 @@ export default function CollectionsSlider() {
       }
     }
   }, [active]);
+
+  if (isLoading) {
+    return (
+      <section className="py-10 md:py-14 bg-secondary/40">
+        <div className="container-luxury">
+          <div className="text-center mb-14">
+            <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">Browse</p>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+              Shop by <span className="text-gradient-gold">Collection</span>
+            </h2>
+          </div>
+          <div className="flex gap-4 overflow-hidden">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex-shrink-0 rounded-xl bg-secondary animate-pulse" style={{ width: 'clamp(200px, 45vw, 320px)', aspectRatio: '4/5' }} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (collections.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14 bg-secondary/40">
@@ -71,7 +81,6 @@ export default function CollectionsSlider() {
           </div>
         </div>
 
-        {/* Horizontal scroll cards */}
         <div className="relative">
           <div
             ref={scrollRef}
@@ -88,12 +97,18 @@ export default function CollectionsSlider() {
                 onMouseEnter={() => setActive(i)}
               >
                 <div className="aspect-[4/5] relative overflow-hidden">
-                  <img
-                    src={typeof col.image === 'string' ? col.image : col.image}
-                    alt={col.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                  />
+                  {col.image ? (
+                    <img
+                      src={col.image}
+                      alt={col.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-secondary flex items-center justify-center">
+                      <span className="font-display text-lg text-muted-foreground">{col.title}</span>
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
                     <span className="inline-block text-[9px] sm:text-[10px] uppercase tracking-widest font-body font-semibold text-accent mb-1.5">
@@ -114,7 +129,6 @@ export default function CollectionsSlider() {
             ))}
           </div>
 
-          {/* Nav arrows — desktop only */}
           {total > 3 && (
             <>
               <button
@@ -135,7 +149,6 @@ export default function CollectionsSlider() {
           )}
         </div>
 
-        {/* Dots */}
         <div className="flex justify-center gap-1.5 mt-5">
           {collections.map((_, i) => (
             <button
@@ -149,7 +162,6 @@ export default function CollectionsSlider() {
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="text-center mt-10 animate-fade-up" style={{ animationDelay: '0.3s' }}>
           <Link
             to="/collections"

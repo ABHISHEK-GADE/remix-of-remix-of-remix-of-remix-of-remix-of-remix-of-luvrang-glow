@@ -7,21 +7,21 @@ const offers = [
     title: 'Festival Sale — Up to 30% Off',
     desc: 'On select festive rangoli collections',
     cta: 'Shop Now',
-    link: '/collections/festive',
+    link: '/shop',
   },
   {
     icon: Gift,
     title: 'Bundle & Save More',
     desc: 'Get 3 or more pieces at exclusive prices',
     cta: 'View Bundles',
-    link: '/collections/everyday',
+    link: '/shop',
   },
   {
     icon: CreditCard,
     title: 'Free Shipping on Prepaid',
     desc: 'All prepaid orders ship free across India',
     cta: 'Start Shopping',
-    link: '/collections/festive',
+    link: '/shop',
   },
 ];
 
