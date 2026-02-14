@@ -37,14 +37,13 @@ export default function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-300 ${scrolled ? 'shadow-soft' : ''}`}>
-        <div className="container-luxury grid grid-cols-3 items-center h-14 sm:h-16 md:h-20">
-          {/* Left: Logo + mobile menu */}
-          <div className="flex items-center gap-2">
+        <div className="container-luxury flex items-center justify-between h-14 sm:h-16 md:h-20">
+          {/* Left: Menu + Logo */}
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 -ml-2 text-foreground"
               aria-label="Toggle menu">
-
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
             <Link to="/" className="flex items-center">
