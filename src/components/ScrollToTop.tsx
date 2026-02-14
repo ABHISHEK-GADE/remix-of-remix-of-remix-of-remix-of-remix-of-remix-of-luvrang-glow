@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
 
 export default function ScrollToTop() {
   const { pathname } = useLocation();
+  const navType = useNavigationType();
   const [showButton, setShowButton] = useState(false);
 
   // Scroll to top on route change
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [pathname]);
+    if (navType !== 'POP') {
+      // Immediate scroll
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      // Fallback after layout shifts (e.g. images loading in hero)
+      const timer = setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, navType]);
 
   // Show/hide back-to-top button
   useEffect(() => {
