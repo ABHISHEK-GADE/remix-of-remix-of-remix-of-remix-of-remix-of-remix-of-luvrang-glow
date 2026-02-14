@@ -1,9 +1,9 @@
 import { toast } from 'sonner';
 
 const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_PERMANENT_DOMAIN = 'g2us2i-d3.myshopify.com';
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'shop.luvrang.in';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '36ef5d9ed27a844affedbac313dd56b2';
+const SHOPIFY_STOREFRONT_TOKEN = 'cdca70c21b78af1a2f64cc509a772159';
 
 // ─── Storefront API Request Helper ──────────────────────────
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
