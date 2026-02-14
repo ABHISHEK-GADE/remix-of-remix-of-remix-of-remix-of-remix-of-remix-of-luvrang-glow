@@ -18,7 +18,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link to={`/product/${p.handle}`} className="group block">
-      <div className="relative overflow-hidden rounded-lg sm:rounded-xl bg-secondary aspect-square mb-2 sm:mb-4">
+      <div className="relative overflow-hidden rounded-lg sm:rounded-xl bg-secondary aspect-[4/5] mb-2 sm:mb-4">
         {image ? (
           <img
             src={image.url}

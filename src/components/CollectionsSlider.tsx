@@ -55,17 +55,14 @@ export default function CollectionsSlider() {
   return (
     <section className="py-10 md:py-14 bg-secondary/40">
       <div className="container-luxury">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <p className="font-body text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Curated For You</p>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Shop by Collection</h2>
+        <div className="text-center mb-14">
+          <div className="text-center flex-1">
+            <p className="font-body text-xs tracking-widest uppercase text-primary font-semibold mb-2">Browse</p>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+              Shop by <span className="text-gradient-gold">Collection</span>
+            </h2>
+            <p className="font-body text-muted-foreground mt-3 text-sm">Find the perfect rangoli for your occasion</p>
           </div>
-          <Link
-            to="/collections"
-            className="hidden sm:inline-flex items-center gap-1.5 font-body text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-          >
-            View All <ArrowRight size={14} />
-          </Link>
         </div>
 
         {/* Horizontal scroll cards */}
@@ -146,13 +143,13 @@ export default function CollectionsSlider() {
           ))}
         </div>
 
-        {/* Mobile View All */}
-        <div className="sm:hidden text-center mt-5">
+        {/* View All Button */}
+        <div className="text-center mt-10 animate-fade-up" style={{ animationDelay: '0.3s' }}>
           <Link
             to="/collections"
-            className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-primary hover:text-primary/80 transition-colors border border-primary rounded-md px-6 py-2.5"
+            className="inline-block border border-primary text-primary font-body text-sm font-medium px-8 py-3 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors"
           >
-            View All Collections <ArrowRight size={14} />
+            View All Collections
           </Link>
         </div>
       </div>
