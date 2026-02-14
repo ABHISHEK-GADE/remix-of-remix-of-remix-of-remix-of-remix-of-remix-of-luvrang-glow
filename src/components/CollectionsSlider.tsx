@@ -42,8 +42,14 @@ export default function CollectionsSlider() {
     return () => clearInterval(timer);
   }, [next]);
 
-  // Scroll active card into view on mobile
+  const hasInteracted = useRef(false);
+
+  // Scroll active card into view on mobile — only after user/auto interaction
   useEffect(() => {
+    if (!hasInteracted.current) {
+      hasInteracted.current = true;
+      return;
+    }
     if (scrollRef.current) {
       const child = scrollRef.current.children[active] as HTMLElement;
       if (child) {
