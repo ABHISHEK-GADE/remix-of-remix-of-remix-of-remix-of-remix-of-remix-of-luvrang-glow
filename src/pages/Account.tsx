@@ -2,7 +2,7 @@ import { User, Package, MapPin, Heart, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
 
-const SHOPIFY_STORE_DOMAIN = 'g2us2i-d3.myshopify.com';
+const SHOPIFY_STORE_DOMAIN = 'shop.luvrang.in';
 const SHOPIFY_ACCOUNT_URL = `https://${SHOPIFY_STORE_DOMAIN}/account`;
 const SHOPIFY_LOGIN_URL = `https://${SHOPIFY_STORE_DOMAIN}/account/login`;
 
