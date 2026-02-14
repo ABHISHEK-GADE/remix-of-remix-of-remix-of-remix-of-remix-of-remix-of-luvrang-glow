@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import type { ShopifyProduct } from '@/api/shopify';
 import { formatPrice } from '@/api/shopify';
+import { useWishlistStore } from '@/stores/wishlistStore';
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -15,6 +17,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   const savings = hasDiscount
     ? Math.round(((parseFloat(compareAt.amount) - parseFloat(price.amount)) / parseFloat(compareAt.amount)) * 100)
     : 0;
+
+  const { toggleItem, isInWishlist } = useWishlistStore();
+  const wishlisted = isInWishlist(p.id);
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleItem(product);
+  };
 
   return (
     <Link to={`/product/${p.handle}`} className="group block">
@@ -41,6 +52,17 @@ export default function ProductCard({ product }: ProductCardProps) {
             Save {savings}%
           </span>
         )}
+
+        <button
+          onClick={handleWishlistClick}
+          className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-background transition-colors"
+          aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+        >
+          <Heart
+            size={16}
+            className={wishlisted ? 'fill-destructive text-destructive' : 'text-muted-foreground'}
+          />
+        </button>
       </div>
 
       <h3 className="font-display text-sm sm:text-base font-medium text-foreground mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1">
