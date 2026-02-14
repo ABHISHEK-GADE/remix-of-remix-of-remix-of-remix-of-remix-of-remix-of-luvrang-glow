@@ -1,16 +1,45 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCollectionByHandle } from '@/api/shopify';
+import { storefrontApiRequest, formatPrice } from '@/api/shopify';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '@/api/shopify';
 import { Package } from 'lucide-react';
 
-export default function BundleHighlights() {
-  const { data: collection, isLoading } = useQuery({
-    queryKey: ['collection', 'bundles'],
-    queryFn: () => getCollectionByHandle('bundles'),
-  });
+const BUNDLES_QUERY = `
+  query GetBundleProducts($first: Int!) {
+    products(first: $first) {
+      edges {
+        node {
+          id
+          title
+          description
+          handle
+          priceRange { minVariantPrice { amount currencyCode } }
+          compareAtPriceRange { minVariantPrice { amount currencyCode } }
+          images(first: 1) { edges { node { url altText } } }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+                requiresComponents
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
-  const bundles = collection?.products?.edges ?? [];
+export default function BundleHighlights() {
+  const { data: bundles = [], isLoading } = useQuery({
+    queryKey: ['products', 'bundles-app'],
+    queryFn: async () => {
+      const data = await storefrontApiRequest(BUNDLES_QUERY, { first: 50 });
+      const products = data?.data?.products?.edges ?? [];
+      return products.filter(
+        (p: any) => p.node.variants.edges.some((v: any) => v.node.requiresComponents === true)
+      );
+    },
+  });
 
   return (
     <section className="section-spacing bg-secondary/30">
@@ -31,7 +60,7 @@ export default function BundleHighlights() {
           </div>
         ) : bundles.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-            {bundles.map((b, i) => {
+            {bundles.map((b: any, i: number) => {
               const p = b.node;
               const price = p.priceRange.minVariantPrice;
               const compareAt = p.compareAtPriceRange?.minVariantPrice;
