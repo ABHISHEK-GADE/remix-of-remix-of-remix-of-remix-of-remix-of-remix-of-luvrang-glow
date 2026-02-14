@@ -23,6 +23,7 @@ import RefundPolicy from "./pages/RefundPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs";
+import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -45,6 +46,7 @@ function AppContent() {
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:handle" element={<Collection />} />
           <Route path="/product/:handle" element={<Product />} />
