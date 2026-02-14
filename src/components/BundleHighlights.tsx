@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '@/api/shopify';
+import { getCollectionByHandle } from '@/api/shopify';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '@/api/shopify';
 import { Package } from 'lucide-react';
 
 export default function BundleHighlights() {
-  const { data: products, isLoading } = useQuery({
-    queryKey: ['products', 'bundles'],
-    queryFn: () => getProducts(6, 'tag:bundle'),
+  const { data: collection, isLoading } = useQuery({
+    queryKey: ['collection', 'bundles'],
+    queryFn: () => getCollectionByHandle('bundles'),
   });
 
-  const bundles = products ?? [];
+  const bundles = collection?.products?.edges ?? [];
 
   return (
     <section className="section-spacing bg-secondary/30">
