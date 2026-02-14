@@ -55,6 +55,8 @@ export default function HeroSlider() {
             src={slide.image}
             alt={slide.title}
             className="w-full h-full object-cover"
+            loading={i === 0 ? "eager" : "lazy"}
+            fetchPriority={i === 0 ? "high" : "auto"}
           />
           <div className="absolute inset-0 bg-foreground/45" />
         </div>

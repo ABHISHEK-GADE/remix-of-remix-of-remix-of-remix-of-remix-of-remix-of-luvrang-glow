@@ -6,10 +6,12 @@ import { SearchDialog } from '@/components/SearchDialog';
 import logo from '@/assets/logo.svg';
 
 const navLinks = [
-{ to: '/', label: 'Home' },
-{ to: '/collections/festive', label: 'Festive' },
-{ to: '/collections/wedding', label: 'Wedding' },
-{ to: '/collections/everyday', label: 'Everyday' }];
+  { to: '/', label: 'Home' },
+  { to: '/collections/festive', label: 'Collections' },
+  { to: '/collections/festive', label: 'Shop', matchPrefix: '/product' },
+  { to: '/about', label: 'About Us' },
+  { to: '/contact', label: 'Contact Us' },
+];
 
 
 export default function Header() {
@@ -51,20 +53,23 @@ export default function Header() {
           </div>
 
           {/* Center: Desktop Nav */}
-          <nav className="hidden md:flex items-center justify-center gap-8 font-body text-sm tracking-wide">
-            {navLinks.map((link) =>
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`transition-colors ${
-              location.pathname === link.to ?
-              'text-primary font-medium' :
-              'text-foreground/70 hover:text-foreground'}`
-              }>
-
-                {link.label}
-              </Link>
-            )}
+          <nav className="hidden md:flex items-center justify-center gap-6 font-body text-sm tracking-wide whitespace-nowrap">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.to || 
+                (link.label === 'Collections' && location.pathname.startsWith('/collections')) ||
+                (link.label === 'Shop' && location.pathname.startsWith('/product'));
+              return (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  className={`transition-colors ${
+                    isActive ? 'text-primary font-medium' : 'text-foreground/70 hover:text-foreground'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right: Action Icons */}
@@ -108,19 +113,22 @@ export default function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen &&
         <nav className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1 font-body text-sm animate-fade-in">
-            {navLinks.map((link) =>
-          <Link
-            key={link.to}
-            to={link.to}
-            className={`block py-3 px-2 rounded-md transition-colors ${
-            location.pathname === link.to ?
-            'text-primary bg-primary/5 font-medium' :
-            'text-foreground/70 hover:text-foreground hover:bg-secondary/50'}`
-            }>
-
-                {link.label}
-              </Link>
-          )}
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.to || 
+                (link.label === 'Collections' && location.pathname.startsWith('/collections')) ||
+                (link.label === 'Shop' && location.pathname.startsWith('/product'));
+              return (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  className={`block py-3 px-2 rounded-md transition-colors ${
+                    isActive ? 'text-primary bg-primary/5 font-medium' : 'text-foreground/70 hover:text-foreground hover:bg-secondary/50'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <hr className="border-border my-2" />
             <Link to="/wishlist" className="flex items-center gap-3 py-3 px-2 text-foreground/70 hover:text-foreground rounded-md hover:bg-secondary/50 transition-colors">
               <Heart size={18} /> Wishlist
