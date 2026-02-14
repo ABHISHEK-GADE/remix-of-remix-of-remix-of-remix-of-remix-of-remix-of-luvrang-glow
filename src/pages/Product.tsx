@@ -68,6 +68,21 @@ export default function Product() {
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  // Parse metafields
+  const metafields = useMemo(() => {
+    const mf: Record<string, string> = {};
+    if (product?.metafields) {
+      product.metafields.forEach((m: { key: string; value: string } | null) => {
+        if (m) mf[m.key] = m.value;
+      });
+    }
+    return mf;
+  }, [product]);
+
+  const careInstructions = metafields['care_instructions'] || metafields['care_guide'] || '';
+  const materials = metafields['materials'] || '';
+  const customBadge = metafields['badge'] || metafields['subtitle'] || '';
+
   // Related products — exclude current
   const relatedProducts = useMemo(() => {
     if (!allProducts || !product) return [];
@@ -119,6 +134,8 @@ export default function Product() {
   const selectedVariant = variants[selectedVariantIndex] || variants[0];
   const images = product.images.edges;
   const mainImage = images[selectedImageIndex]?.node || selectedVariant.image || images[0]?.node;
+
+  // metafields already parsed above early returns
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
@@ -190,9 +207,15 @@ export default function Product() {
               )}
               {/* Badges */}
               <div className="absolute top-3 left-3 flex flex-col gap-2">
-                <span className="bg-background/90 backdrop-blur-sm text-foreground text-[9px] sm:text-[10px] tracking-widest uppercase font-body font-medium px-2.5 py-1.5 rounded-md">
-                  Made to Order
-                </span>
+                {customBadge ? (
+                  <span className="bg-background/90 backdrop-blur-sm text-foreground text-[9px] sm:text-[10px] tracking-widest uppercase font-body font-medium px-2.5 py-1.5 rounded-md">
+                    {customBadge}
+                  </span>
+                ) : (
+                  <span className="bg-background/90 backdrop-blur-sm text-foreground text-[9px] sm:text-[10px] tracking-widest uppercase font-body font-medium px-2.5 py-1.5 rounded-md">
+                    Made to Order
+                  </span>
+                )}
                 {hasDiscount && savingsPercent > 0 && (
                   <span className="bg-accent text-accent-foreground text-[9px] sm:text-[10px] tracking-wide uppercase font-body font-bold px-2.5 py-1.5 rounded-md">
                     {savingsPercent}% OFF
@@ -382,13 +405,22 @@ export default function Product() {
 
             {/* Accordions */}
             <div className="mt-8 border-t border-border divide-y divide-border">
+              {materials && (
+                <AccordionItem title="Materials" icon={Star} defaultOpen>
+                  <p>{materials}</p>
+                </AccordionItem>
+              )}
               <AccordionItem title="Care Instructions" icon={Star}>
-                <ul className="space-y-1.5 list-disc list-inside ml-1">
-                  <li>Wipe gently with a dry or slightly damp cloth</li>
-                  <li>Store flat in a cool, dry place</li>
-                  <li>Avoid direct sunlight for prolonged periods</li>
-                  <li>Keep away from water and moisture</li>
-                </ul>
+                {careInstructions ? (
+                  <p>{careInstructions}</p>
+                ) : (
+                  <ul className="space-y-1.5 list-disc list-inside ml-1">
+                    <li>Wipe gently with a dry or slightly damp cloth</li>
+                    <li>Store flat in a cool, dry place</li>
+                    <li>Avoid direct sunlight for prolonged periods</li>
+                    <li>Keep away from water and moisture</li>
+                  </ul>
+                )}
               </AccordionItem>
               <AccordionItem title="Delivery Information" icon={Package}>
                 <ul className="space-y-1.5 list-disc list-inside ml-1">

@@ -154,6 +154,18 @@ const PRODUCT_BY_HANDLE_QUERY = `
         }
       }
       options { name values }
+      metafields(identifiers: [
+        { namespace: "custom", key: "care_instructions" }
+        { namespace: "custom", key: "materials" }
+        { namespace: "custom", key: "badge" }
+        { namespace: "descriptors", key: "care_guide" }
+        { namespace: "descriptors", key: "subtitle" }
+      ]) {
+        key
+        namespace
+        value
+        type
+      }
     }
   }
 `;
