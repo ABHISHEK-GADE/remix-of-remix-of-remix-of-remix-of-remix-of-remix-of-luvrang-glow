@@ -21,7 +21,7 @@ export default function FeaturedProducts() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="space-y-3">
                 <div className="aspect-square rounded-xl bg-secondary animate-pulse" />
@@ -31,7 +31,7 @@ export default function FeaturedProducts() {
             ))}
           </div>
         ) : products && products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {products.map((product, i) => (
               <div key={product.node.id} className="animate-fade-up" style={{ animationDelay: `${(i % 4) * 0.08}s` }}>
                 <ProductCard product={product} />

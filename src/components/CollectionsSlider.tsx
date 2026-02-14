@@ -36,13 +36,13 @@ export default function CollectionsSlider() {
           <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Shop by Collection</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
           {collections.slice(0, 3).map((col, i) => (
             <Link
               key={col.handle}
               to={`/collections/${col.handle}`}
               className={`group relative overflow-hidden rounded-xl ${
-                i === 0 ? 'sm:row-span-2 aspect-[3/4] sm:aspect-auto sm:h-full' : 'aspect-[4/3]'
+                i === 0 ? 'col-span-2 sm:col-span-1 sm:row-span-2 aspect-[16/9] sm:aspect-auto sm:h-full' : 'aspect-[4/3]'
               }`}
             >
               <img
@@ -52,12 +52,12 @@ export default function CollectionsSlider() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 md:p-6">
                 <span className="inline-block text-[10px] uppercase tracking-widest font-body font-semibold text-accent mb-2">
                   {col.count}+ designs
                 </span>
-                <h3 className="font-display text-lg md:text-xl font-semibold text-background leading-tight">{col.title}</h3>
-                <p className="font-body text-background/60 text-xs mt-1 line-clamp-1">{col.description}</p>
+                <h3 className="font-display text-base md:text-xl font-semibold text-background leading-tight">{col.title}</h3>
+                <p className="font-body text-background/60 text-[10px] sm:text-xs mt-0.5 sm:mt-1 line-clamp-1">{col.description}</p>
                 <span className="inline-flex items-center gap-1.5 mt-3 text-xs font-body font-medium text-accent group-hover:gap-2.5 transition-all duration-300">
                   Explore <ArrowRight size={13} />
                 </span>

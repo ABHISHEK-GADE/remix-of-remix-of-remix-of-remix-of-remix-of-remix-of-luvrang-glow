@@ -25,7 +25,7 @@ export default function CartDrawer() {
       )}
 
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-background z-50 shadow-elevated flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-full sm:max-w-md bg-background z-50 shadow-elevated flex flex-col transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

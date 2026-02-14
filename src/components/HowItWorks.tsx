@@ -16,14 +16,14 @@ export default function HowItWorks() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {steps.map((s, i) => (
             <div
               key={s.step}
-              className="relative text-center p-6 rounded-xl bg-background border border-border/50 hover-lift animate-fade-up"
+              className="relative text-center p-4 sm:p-6 rounded-xl bg-background border border-border/50 hover-lift animate-fade-up"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
-              <span className="font-display text-5xl font-bold text-primary/10 leading-none">{s.step}</span>
+              <span className="font-display text-3xl sm:text-5xl font-bold text-primary/10 leading-none">{s.step}</span>
               <h3 className="font-display text-lg font-semibold text-foreground mt-3 mb-2">{s.title}</h3>
               <p className="font-body text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
               {i < steps.length - 1 && (

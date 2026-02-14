@@ -24,13 +24,13 @@ export default function BundleHighlights() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="h-48 rounded-xl bg-secondary animate-pulse" />
             ))}
           </div>
         ) : bundles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
             {bundles.map((b, i) => {
               const p = b.node;
               const price = p.priceRange.minVariantPrice;

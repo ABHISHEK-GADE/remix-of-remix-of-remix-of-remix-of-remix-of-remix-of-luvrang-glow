@@ -37,7 +37,7 @@ export default function OffersSection() {
           <p className="font-body text-muted-foreground mt-3 text-sm">Don't miss out on these exclusive deals</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           {offers.map((offer, i) => (
             <Link
               key={offer.title}

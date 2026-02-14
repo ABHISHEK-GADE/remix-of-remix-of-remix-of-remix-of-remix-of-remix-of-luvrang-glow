@@ -18,7 +18,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link to={`/product/${p.handle}`} className="group block">
-      <div className="relative overflow-hidden rounded-xl bg-secondary aspect-square mb-4">
+      <div className="relative overflow-hidden rounded-lg sm:rounded-xl bg-secondary aspect-square mb-2 sm:mb-4">
         {image ? (
           <img
             src={image.url}
@@ -32,22 +32,22 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        <span className="absolute top-3 left-3 bg-background/90 backdrop-blur-sm text-foreground text-[10px] tracking-widest uppercase font-body font-medium px-3 py-1.5 rounded-md">
+        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-background/90 backdrop-blur-sm text-foreground text-[8px] sm:text-[10px] tracking-widest uppercase font-body font-medium px-2 py-1 sm:px-3 sm:py-1.5 rounded-md">
           Made to Order
         </span>
 
         {hasDiscount && savings > 0 && (
-          <span className="absolute top-3 right-3 bg-accent text-accent-foreground text-[10px] tracking-wide uppercase font-body font-bold px-2.5 py-1.5 rounded-md">
+          <span className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-accent text-accent-foreground text-[8px] sm:text-[10px] tracking-wide uppercase font-body font-bold px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-md">
             Save {savings}%
           </span>
         )}
       </div>
 
-      <h3 className="font-display text-base font-medium text-foreground mb-1 group-hover:text-primary transition-colors line-clamp-1">
+      <h3 className="font-display text-sm sm:text-base font-medium text-foreground mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1">
         {p.title}
       </h3>
 
-      <div className="flex items-center gap-2 font-body text-sm">
+      <div className="flex items-center gap-1.5 sm:gap-2 font-body text-xs sm:text-sm">
         <span className="text-foreground font-medium">
           {formatPrice(price.amount, price.currencyCode)}
         </span>
