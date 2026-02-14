@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getCollections } from '@/api/shopify';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import festiveImg from '@/assets/collection-festive.jpg';
 import weddingImg from '@/assets/collection-wedding.jpg';
 import everydayImg from '@/assets/collection-everyday.jpg';
@@ -31,6 +31,7 @@ export default function CollectionsSlider() {
 
   const [active, setActive] = useState(0);
   const total = collections.length;
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const next = useCallback(() => setActive((p) => (p + 1) % total), [total]);
   const prev = useCallback(() => setActive((p) => (p - 1 + total) % total), [total]);
@@ -40,6 +41,16 @@ export default function CollectionsSlider() {
     const timer = setInterval(next, 4000);
     return () => clearInterval(timer);
   }, [next]);
+
+  // Scroll active card into view on mobile
+  useEffect(() => {
+    if (scrollRef.current) {
+      const child = scrollRef.current.children[active] as HTMLElement;
+      if (child) {
+        child.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+  }, [active]);
 
   return (
     <section className="py-10 md:py-14 bg-secondary/40">
@@ -57,80 +68,86 @@ export default function CollectionsSlider() {
           </Link>
         </div>
 
-        {/* Slider */}
-        <div className="relative overflow-hidden rounded-xl">
+        {/* Horizontal scroll cards */}
+        <div className="relative">
           <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${active * 100}%)` }}
+            ref={scrollRef}
+            className="flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2"
           >
-            {collections.map((col) => (
+            {collections.map((col, i) => (
               <Link
                 key={col.handle}
                 to={`/collections/${col.handle}`}
-                className="group relative flex-shrink-0 w-full aspect-[16/9] sm:aspect-[21/9]"
+                className={`group relative flex-shrink-0 overflow-hidden rounded-xl snap-center transition-all duration-500 ${
+                  i === active ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-secondary/40' : ''
+                }`}
+                style={{ width: 'clamp(200px, 45vw, 320px)' }}
+                onMouseEnter={() => setActive(i)}
               >
-                <img
-                  src={typeof col.image === 'string' ? col.image : col.image}
-                  alt={col.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-10">
-                  <span className="inline-block text-[10px] uppercase tracking-widest font-body font-semibold text-accent mb-2">
-                    {col.count}+ designs
-                  </span>
-                  <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-background leading-tight">
-                    {col.title}
-                  </h3>
-                  <p className="font-body text-background/60 text-xs sm:text-sm mt-1 max-w-md line-clamp-1">
-                    {col.description}
-                  </p>
-                  <span className="inline-flex items-center gap-1.5 mt-3 text-xs sm:text-sm font-body font-medium text-accent group-hover:gap-2.5 transition-all duration-300">
-                    Explore <ArrowRight size={14} />
-                  </span>
+                <div className="aspect-[4/5] relative overflow-hidden">
+                  <img
+                    src={typeof col.image === 'string' ? col.image : col.image}
+                    alt={col.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                    <span className="inline-block text-[9px] sm:text-[10px] uppercase tracking-widest font-body font-semibold text-accent mb-1.5">
+                      {col.count}+ designs
+                    </span>
+                    <h3 className="font-display text-lg sm:text-xl font-semibold text-background leading-tight">
+                      {col.title}
+                    </h3>
+                    <p className="font-body text-background/50 text-[10px] sm:text-xs mt-1 line-clamp-1">
+                      {col.description}
+                    </p>
+                    <span className="inline-flex items-center gap-1 mt-2.5 text-[11px] sm:text-xs font-body font-medium text-accent group-hover:gap-2 transition-all duration-300">
+                      Explore <ArrowRight size={12} />
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}
           </div>
 
-          {/* Nav arrows */}
-          {total > 1 && (
+          {/* Nav arrows — desktop only */}
+          {total > 3 && (
             <>
               <button
                 onClick={prev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-background/20 backdrop-blur-sm text-background flex items-center justify-center hover:bg-background/40 transition-colors"
-                aria-label="Previous collection"
+                className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background shadow-card text-foreground items-center justify-center hover:bg-secondary transition-colors"
+                aria-label="Previous"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
                 onClick={next}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-background/20 backdrop-blur-sm text-background flex items-center justify-center hover:bg-background/40 transition-colors"
-                aria-label="Next collection"
+                className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background shadow-card text-foreground items-center justify-center hover:bg-secondary transition-colors"
+                aria-label="Next"
               >
                 <ChevronRight size={18} />
               </button>
             </>
           )}
+        </div>
 
-          {/* Dots */}
-          <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 sm:gap-2">
-            {collections.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === active ? 'bg-background w-6 sm:w-8' : 'bg-background/40 w-2'
-                }`}
-                aria-label={`Go to collection ${i + 1}`}
-              />
-            ))}
-          </div>
+        {/* Dots */}
+        <div className="flex justify-center gap-1.5 mt-5">
+          {collections.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === active ? 'bg-primary w-6' : 'bg-border w-1.5'
+              }`}
+              aria-label={`Go to collection ${i + 1}`}
+            />
+          ))}
         </div>
 
         {/* Mobile View All */}
-        <div className="sm:hidden text-center mt-6">
+        <div className="sm:hidden text-center mt-5">
           <Link
             to="/collections"
             className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-primary hover:text-primary/80 transition-colors border border-primary rounded-md px-6 py-2.5"
