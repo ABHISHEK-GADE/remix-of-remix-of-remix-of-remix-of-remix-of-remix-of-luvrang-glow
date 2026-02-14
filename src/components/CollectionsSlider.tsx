@@ -102,7 +102,7 @@ export default function CollectionsSlider() {
                     <h3 className="font-display text-lg sm:text-xl font-semibold text-background leading-tight">
                       {col.title}
                     </h3>
-                    <p className="font-body text-background/50 text-[10px] sm:text-xs mt-1 line-clamp-1">
+                    <p className="font-body text-background/70 text-[10px] sm:text-xs mt-1 line-clamp-1">
                       {col.description}
                     </p>
                     <span className="inline-flex items-center gap-1 mt-2.5 text-[11px] sm:text-xs font-body font-medium text-accent group-hover:gap-2 transition-all duration-300">

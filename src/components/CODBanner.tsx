@@ -27,7 +27,7 @@ export default function CODBanner() {
             >
               <item.icon size={20} className="mx-auto mb-2 sm:mb-3 text-accent" />
               <h3 className="font-display text-xs sm:text-sm font-semibold mb-0.5 sm:mb-1">{item.title}</h3>
-              <p className="font-body text-primary-foreground/60 text-[10px] sm:text-xs hidden sm:block">{item.desc}</p>
+              <p className="font-body text-primary-foreground/70 text-[10px] sm:text-xs hidden sm:block">{item.desc}</p>
             </div>
           ))}
         </div>

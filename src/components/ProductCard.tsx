@@ -32,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-background/90 backdrop-blur-sm text-foreground text-[8px] sm:text-[10px] tracking-widest uppercase font-body font-medium px-2 py-1 sm:px-3 sm:py-1.5 rounded-md">
+        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-background/95 backdrop-blur-sm text-foreground text-[9px] sm:text-[10px] tracking-widest uppercase font-body font-medium px-2 py-1 sm:px-3 sm:py-1.5 rounded-md shadow-sm">
           Made to Order
         </span>
 

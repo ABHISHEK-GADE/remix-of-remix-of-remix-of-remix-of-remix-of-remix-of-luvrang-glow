@@ -73,7 +73,7 @@ export default function HeroSlider() {
           </h1>
           <p
             key={`sub-${active}`}
-            className="font-body text-background/80 text-sm md:text-lg mt-4 md:mt-6 max-w-xl mx-auto animate-fade-up px-4"
+            className="font-body text-background/90 text-sm md:text-lg mt-4 md:mt-6 max-w-xl mx-auto animate-fade-up px-4"
             style={{ animationDelay: '0.15s' }}
           >
             {slides[active].subtitle}

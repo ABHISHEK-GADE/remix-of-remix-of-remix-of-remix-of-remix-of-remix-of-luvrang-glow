@@ -25,8 +25,8 @@ export default function WhyLuvRang() {
               className="text-center p-4 sm:p-6 rounded-xl bg-secondary/50 border border-border/50 hover-lift animate-fade-up"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
-              <div className="w-10 h-10 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-lg bg-primary/10 flex items-center justify-center">
-                <f.icon size={20} className="text-primary sm:hidden" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-xl bg-primary/10 flex items-center justify-center">
+                <f.icon size={22} className="text-primary sm:hidden" />
                 <f.icon size={24} className="text-primary hidden sm:block" />
               </div>
               <h3 className="font-display text-base font-semibold text-foreground mb-2">{f.title}</h3>
