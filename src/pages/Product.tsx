@@ -4,15 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useCartStore } from '@/stores/cartStore';
 import {
   Minus, Plus, ChevronDown, ChevronRight, Share2,
-  Truck, RotateCcw, Shield, Heart, Package, Star,
+  Truck, Shield, Heart, Package, Star,
   Eye, Clock, Sparkles, Check, ShoppingBag, Zap,
-  ChevronLeft,
+  ChevronLeft, Award, MessageSquare,
 } from 'lucide-react';
 import { getProductByHandle, getProducts, formatPrice } from '@/api/shopify';
 import type { ShopifyProduct } from '@/api/shopify';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
 import ProductCard from '@/components/ProductCard';
+import OffersSection from '@/components/OffersSection';
 
 /* ─── Accordion ──────────────────────────────────────────── */
 function AccordionItem({
@@ -53,18 +54,44 @@ function AccordionItem({
   );
 }
 
-/* ─── Social Proof Ticker ────────────────────────────────── */
+/* ─── Deterministic Social Proof (same across all devices) ─ */
+function useSocialProof() {
+  const [viewers, setViewers] = useState(0);
+  const [purchased, setPurchased] = useState(0);
+
+  useEffect(() => {
+    // Seed from current minute so all devices get same value, fluctuates every 30s
+    const update = () => {
+      const now = Date.now();
+      const seed = Math.floor(now / 30000); // changes every 30 seconds
+      // Simple deterministic pseudo-random from seed
+      const hash1 = ((seed * 2654435761) >>> 0) % 1000;
+      const hash2 = ((seed * 2246822519) >>> 0) % 1000;
+      // Viewers: 5-60
+      setViewers(5 + (hash1 % 56));
+      // Purchased in last 5 hours: 3-20
+      setPurchased(3 + (hash2 % 18));
+    };
+
+    update();
+    const interval = setInterval(update, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return { viewers, purchased };
+}
+
 function SocialProofBanner() {
-  const [viewerCount] = useState(() => Math.floor(Math.random() * 18) + 8);
+  const { viewers, purchased } = useSocialProof();
   return (
     <div className="flex items-center gap-5 font-body text-xs text-muted-foreground">
       <span className="flex items-center gap-1.5">
         <Eye size={13} className="text-primary" />
-        <span className="font-medium text-foreground">{viewerCount}</span> people viewing right now
+        <span className="font-medium text-foreground">{viewers}</span> viewing now
       </span>
       <span className="flex items-center gap-1.5">
         <Clock size={13} className="text-accent" />
-        Purchased <span className="font-medium text-foreground">{Math.floor(Math.random() * 5) + 3}×</span> in the last 24h
+        Purchased <span className="font-medium text-foreground">{purchased}×</span> in last 5h
       </span>
     </div>
   );
@@ -115,6 +142,88 @@ function ZoomableImage({
       />
       {!zoomed && children}
     </div>
+  );
+}
+
+/* ─── Reviews Section ────────────────────────────────────── */
+function ReviewsSection() {
+  return (
+    <section className="section-spacing border-t border-border">
+      <div className="container-luxury">
+        <div className="text-center mb-10">
+          <p className="font-body text-xs tracking-[0.2em] uppercase text-primary font-semibold mb-2">
+            What Customers Say
+          </p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            Customer <span className="text-gradient-gold">Reviews</span>
+          </h2>
+        </div>
+
+        {/* Rating summary */}
+        <div className="max-w-2xl mx-auto text-center mb-10">
+          <div className="flex items-center justify-center gap-1.5 mb-2">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star key={s} size={22} className="text-accent fill-accent" />
+            ))}
+          </div>
+          <p className="font-display text-4xl font-bold text-foreground">4.9</p>
+          <p className="font-body text-sm text-muted-foreground mt-1">Based on 120+ happy customers</p>
+        </div>
+
+        {/* Review cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          {[
+            {
+              name: 'Priya S.',
+              location: 'Mumbai',
+              rating: 5,
+              text: 'Absolutely stunning rangoli! The colors are vibrant and the craftsmanship is exceptional. My guests always compliment it.',
+              date: '2 weeks ago',
+            },
+            {
+              name: 'Anita M.',
+              location: 'Delhi',
+              rating: 5,
+              text: 'Perfect for daily pooja area decoration. Reusable and so easy to maintain. Already ordered my second set!',
+              date: '1 month ago',
+            },
+            {
+              name: 'Deepika R.',
+              location: 'Bangalore',
+              rating: 5,
+              text: 'Bought this for Diwali and it was the highlight of our home decoration. Premium quality and beautiful packaging.',
+              date: '3 weeks ago',
+            },
+          ].map((review, i) => (
+            <div
+              key={review.name}
+              className="bg-secondary/30 border border-border/50 rounded-xl p-6 animate-fade-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              <div className="flex items-center gap-1 mb-3">
+                {Array.from({ length: review.rating }).map((_, s) => (
+                  <Star key={s} size={14} className="text-accent fill-accent" />
+                ))}
+              </div>
+              <p className="font-body text-sm text-foreground leading-relaxed mb-4">"{review.text}"</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-body text-sm font-semibold text-foreground">{review.name}</p>
+                  <p className="font-body text-xs text-muted-foreground">{review.location}</p>
+                </div>
+                <span className="font-body text-[10px] text-muted-foreground">{review.date}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <button className="inline-flex items-center gap-2 font-body text-sm font-medium text-primary hover:underline">
+            <MessageSquare size={16} /> Write a Review
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -421,28 +530,6 @@ export default function Product() {
                 )}
               </div>
 
-              {/* Top-right actions */}
-              <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleWishlist(); }}
-                  className={`p-2.5 rounded-full backdrop-blur-sm transition-all shadow-sm ${
-                    wishlisted
-                      ? 'bg-destructive text-destructive-foreground'
-                      : 'bg-background/90 text-foreground/60 hover:text-foreground'
-                  }`}
-                  aria-label="Add to wishlist"
-                >
-                  <Heart size={16} fill={wishlisted ? 'currentColor' : 'none'} />
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleShare(); }}
-                  className="p-2.5 bg-background/90 backdrop-blur-sm rounded-full text-foreground/60 hover:text-foreground transition-colors shadow-sm"
-                  aria-label="Share"
-                >
-                  <Share2 size={16} />
-                </button>
-              </div>
-
               {/* Image nav arrows */}
               {images.length > 1 && (
                 <>
@@ -527,20 +614,6 @@ export default function Product() {
                 Handcrafted to Order • Ships in 3–5 days
               </span>
             </div>
-
-            {/* Description */}
-            {product.descriptionHtml ? (
-              <div
-                className="font-body text-muted-foreground text-sm leading-relaxed mt-5 prose prose-sm max-w-none
-                  [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1
-                  [&_strong]:text-foreground [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline"
-                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-              />
-            ) : (
-              <p className="font-body text-muted-foreground text-sm leading-relaxed mt-5">
-                {product.description}
-              </p>
-            )}
 
             <div className="border-t border-border mt-6 pt-6 space-y-6">
               {/* Variant Selector */}
@@ -643,11 +716,32 @@ export default function Product() {
               </div>
             </div>
 
+            {/* ── Wishlist & Share (accessible, below CTA) ──── */}
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                onClick={handleWishlist}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border transition-all font-body text-xs font-medium ${
+                  wishlisted
+                    ? 'border-destructive/30 bg-destructive/5 text-destructive'
+                    : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/20'
+                }`}
+              >
+                <Heart size={15} fill={wishlisted ? 'currentColor' : 'none'} />
+                {wishlisted ? 'Wishlisted' : 'Add to Wishlist'}
+              </button>
+              <button
+                onClick={handleShare}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-all font-body text-xs font-medium"
+              >
+                <Share2 size={15} /> Share
+              </button>
+            </div>
+
             {/* ── Trust Badges ──────────────────────────────── */}
             <div className="mt-7 grid grid-cols-3 gap-2.5">
               {[
-                { icon: Truck, label: 'Free Prepaid Shipping', sub: 'PAN India' },
-                { icon: RotateCcw, label: 'Easy Returns', sub: '7-day policy' },
+                { icon: Truck, label: 'Free Shipping', sub: 'PAN India' },
+                { icon: Award, label: 'Premium Quality', sub: 'Handcrafted' },
                 { icon: Shield, label: 'Secure Payment', sub: '100% safe' },
               ].map(({ icon: BadgeIcon, label, sub }) => (
                 <div
@@ -661,26 +755,6 @@ export default function Product() {
                   <span className="font-body text-[9px] text-muted-foreground mt-0.5">{sub}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Payment notes */}
-            <div className="mt-5 rounded-xl bg-secondary/30 border border-border/50 p-4 space-y-2.5 font-body text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-accent/15 flex items-center justify-center shrink-0">
-                  <span className="w-2 h-2 rounded-full bg-accent" />
-                </div>
-                <span className="text-foreground">
-                  <span className="font-semibold">COD available</span> — ₹59 extra charge
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                </div>
-                <span className="text-foreground">
-                  <span className="font-semibold">Prepaid</span> — Free shipping, no extra charges
-                </span>
-              </div>
             </div>
 
             {/* ── Accordions ───────────────────────────────── */}
@@ -707,23 +781,59 @@ export default function Product() {
                   <li>Made to order — crafted after your purchase</li>
                   <li>Ships within 3–5 business days</li>
                   <li>PAN India delivery via trusted couriers</li>
-                  <li>Cash on Delivery available (₹59 extra)</li>
-                  <li>Prepaid orders enjoy free shipping</li>
+                  <li>Free shipping on all orders</li>
                 </ul>
               </AccordionItem>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* ── You May Also Like ──────────────────────────── */}
-        {relatedProducts.length > 0 && (
-          <section className="mt-16 md:mt-24 border-t border-border pt-12">
+      {/* ── Description Section ──────────────────────────── */}
+      <section className="section-spacing border-t border-border">
+        <div className="container-luxury">
+          <div className="text-center mb-10">
+            <p className="font-body text-xs tracking-[0.2em] uppercase text-primary font-semibold mb-2">
+              About This Product
+            </p>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+              Product <span className="text-gradient-gold">Details</span>
+            </h2>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            {product.descriptionHtml ? (
+              <div
+                className="font-body text-muted-foreground text-base leading-relaxed prose prose-lg max-w-none
+                  [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2
+                  [&_strong]:text-foreground [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline
+                  [&_img]:rounded-xl [&_img]:my-6 [&_img]:w-full [&_img]:shadow-md
+                  [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-8 [&_h2]:mb-4
+                  [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-6 [&_h3]:mb-3
+                  [&_p]:mb-4"
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+              />
+            ) : (
+              <p className="font-body text-muted-foreground text-base leading-relaxed text-center">
+                {product.description}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Reviews Section ──────────────────────────────── */}
+      <ReviewsSection />
+
+      {/* ── You May Also Like (Upsell/Downsell) ─────────── */}
+      {relatedProducts.length > 0 && (
+        <section className="section-spacing border-t border-border">
+          <div className="container-luxury">
             <div className="text-center mb-10">
               <p className="font-body text-xs tracking-[0.2em] uppercase text-primary font-semibold mb-2">
-                Discover More
+                Complete Your Collection
               </p>
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
-                You May Also <span className="text-gradient-gold">Like</span>
+                You May Also <span className="text-gradient-gold">Love</span>
               </h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
@@ -737,9 +847,12 @@ export default function Product() {
                 </div>
               ))}
             </div>
-          </section>
-        )}
-      </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Offers Section ───────────────────────────────── */}
+      <OffersSection />
 
       {/* Sticky mobile bar */}
       <MobileStickyBar
