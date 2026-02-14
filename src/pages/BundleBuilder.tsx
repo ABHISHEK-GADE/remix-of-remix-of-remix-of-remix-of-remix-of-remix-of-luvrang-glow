@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import SEO from '@/components/SEO';
 
 const MIN_BUNDLE_SIZE = 3;
-const BUNDLE_DISCOUNT_PERCENT = 10;
+const BUNDLE_DISCOUNT_PERCENT = 5;
 
 export default function BundleBuilder() {
   const [selectedItems, setSelectedItems] = useState<Map<string, { product: ShopifyProduct; qty: number }>>(new Map());

@@ -14,7 +14,7 @@ export default function BundleHighlights() {
             Build Your Own <span className="text-gradient-gold">Bundle</span>
           </h2>
           <p className="font-body text-muted-foreground mt-3 text-sm max-w-md mx-auto">
-            Pick 3 or more products and get <strong>10% off</strong> your entire bundle. Mix your favourites and save!
+            Pick 3 or more products and get <strong>5% off</strong> your entire bundle. Mix your favourites and save!
           </p>
           <Link
             to="/bundle-builder"
