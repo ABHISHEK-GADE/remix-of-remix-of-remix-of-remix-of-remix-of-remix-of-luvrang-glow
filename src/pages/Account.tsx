@@ -32,7 +32,7 @@ export default function Account() {
               </p>
             </div>
             <a
-              href="https://account.luvrang.in/authentication/login?client_id=73268890-12ae-4cd2-821a-bae2ad0e0dce&locale=en&redirect_uri=%2Fauthentication%2Foauth%2Fauthorize%3Fclient_id%3D73268890-12ae-4cd2-821a-bae2ad0e0dce%26locale%3Den%26nonce%3D3bf53ec8-53cf-49cf-8792-f4dea9755751%26redirect_uri%3Dhttps%253A%252F%252Faccount.luvrang.in%252Fcallback%26region_country%3DIN%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWN8mp7YMgU22QnehCRfkJ61&region_country=IN"
+              href="https://shop.luvrang.in/account/login"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-body text-sm font-medium px-8 py-3.5 rounded-md hover:bg-primary/90 transition-colors"
